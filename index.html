@@ -1,228 +1,213 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Namokar Radio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Namokar Radio</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111827;
-      color: white;
-      text-align: center;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#111827;
+  color:white;
+  text-align:center;
+}
 
-    .box {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 45px 20px;
-    }
+.box{
+  max-width:500px;
+  margin:auto;
+  padding:45px 20px;
+}
 
-    h1 {
-      font-size: 34px;
-      margin-bottom: 10px;
-    }
+h1{
+  font-size:34px;
+  margin-bottom:10px;
+}
 
-    h2 {
-      font-size: 22px;
-      margin-top: 0;
-      font-weight: normal;
-    }
+h2{
+  font-size:22px;
+  font-weight:normal;
+}
 
-    p {
-      color: #d1d5db;
-      margin-bottom: 35px;
-    }
+p{
+  color:#d1d5db;
+  margin-bottom:30px;
+}
 
-    button {
-      width: 190px;
-      padding: 18px;
-      margin: 8px;
-      border: none;
-      border-radius: 12px;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button{
+  width:190px;
+  padding:18px;
+  margin:8px;
+  border:0;
+  border-radius:12px;
+  font-size:20px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    #record {
-      background: #f59e0b;
-      color: white;
-    }
+#record{background:#f59e0b;color:white}
+#stop{background:#dc2626;color:white}
+#submit{background:#16a34a;color:white}
 
-    #stop {
-      background: #dc2626;
-      color: white;
-    }
+button:disabled{
+  opacity:.4;
+}
 
-    #submit {
-      background: #16a34a;
-      color: white;
-    }
+audio{
+  width:100%;
+  margin:25px 0;
+}
 
-    button:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    audio {
-      width: 100%;
-      margin: 25px 0;
-    }
-
-    #status {
-      margin-top: 20px;
-      font-size: 17px;
-      color: #fbbf24;
-    }
-  </style>
+#status{
+  margin-top:20px;
+  font-size:17px;
+  color:#fbbf24;
+}
+</style>
 </head>
 
 <body>
 
 <div class="box">
 
-  <h1>NAMOKAR RADIO</h1>
+<h1>NAMOKAR RADIO</h1>
+<h2>CHANT NAMOKAR</h2>
+<p>Your voice on Namokar Radio</p>
 
-  <h2>CHANT NAMOKAR</h2>
+<button id="record">🎙️ RECORD</button>
+<button id="stop" disabled>⏹️ STOP</button>
 
-  <p>Your voice on Namokar Radio</p>
+<audio id="audio" controls></audio>
 
-  <button id="record">🎙️ RECORD</button>
+<button id="submit" disabled>✅ SUBMIT</button>
 
-  <button id="stop" disabled>⏹️ STOP</button>
-
-  <audio id="audio" controls></audio>
-
-  <button id="submit" disabled>✅ SUBMIT</button>
-
-  <div id="status">Tap RECORD to begin</div>
+<div id="status">Tap RECORD to begin</div>
 
 </div>
 
 <script>
 
 let recorder;
-let audioChunks = [];
-let audioBlob = null;
+let audioChunks=[];
+let audioBlob=null;
 
-const recordButton = document.getElementById("record");
-const stopButton = document.getElementById("stop");
-const submitButton = document.getElementById("submit");
-const audioPlayer = document.getElementById("audio");
-const status = document.getElementById("status");
+const recordButton=document.getElementById("record");
+const stopButton=document.getElementById("stop");
+const submitButton=document.getElementById("submit");
+const audioPlayer=document.getElementById("audio");
+const status=document.getElementById("status");
 
-recordButton.onclick = async function() {
+recordButton.onclick=async function(){
 
-  try {
+  try{
 
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true
+    const stream=await navigator.mediaDevices.getUserMedia({
+      audio:true
     });
 
-    audioChunks = [];
+    audioChunks=[];
 
-    recorder = new MediaRecorder(stream);
+    recorder=new MediaRecorder(stream);
 
-    recorder.ondataavailable = function(event) {
-      if (event.data.size > 0) {
-        audioChunks.push(event.data);
+    recorder.ondataavailable=function(e){
+      if(e.data.size>0){
+        audioChunks.push(e.data);
       }
     };
 
-    recorder.onstop = function() {
+    recorder.onstop=function(){
 
-      audioBlob = new Blob(audioChunks, {
-        type: "audio/webm"
+      audioBlob=new Blob(audioChunks,{
+        type:"audio/webm"
       });
 
-      audioPlayer.src = URL.createObjectURL(audioBlob);
+      audioPlayer.src=URL.createObjectURL(audioBlob);
 
-      submitButton.disabled = false;
+      submitButton.disabled=false;
 
-      status.innerText = "Recording ready. Tap PLAY to listen, then SUBMIT.";
+      status.innerText=
+        "Recording ready. Play it, then tap SUBMIT.";
 
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach(track=>track.stop());
     };
 
     recorder.start();
 
-    recordButton.disabled = true;
-    stopButton.disabled = false;
+    recordButton.disabled=true;
+    stopButton.disabled=false;
 
-    status.innerText = "🔴 Recording... Chant Namokar.";
+    status.innerText="🔴 Recording... Chant Namokar.";
 
-  } catch (error) {
+  }catch(error){
 
-    status.innerText =
-      "Microphone access was not allowed. Please allow microphone access.";
+    status.innerText=
+      "Microphone access was not allowed.";
 
     console.error(error);
   }
 };
 
+stopButton.onclick=function(){
 
-stopButton.onclick = function() {
-
-  if (recorder && recorder.state !== "inactive") {
-
+  if(recorder && recorder.state!=="inactive"){
     recorder.stop();
-
-    recordButton.disabled = false;
-    stopButton.disabled = true;
-
+    recordButton.disabled=false;
+    stopButton.disabled=true;
   }
 };
 
+submitButton.onclick=function(){
 
-submitButton.onclick = async function() {
+  if(!audioBlob)return;
 
-  if (!audioBlob) {
-    return;
-  }
+  status.innerText="Submitting...";
 
-  status.innerText = "Submitting...";
+  const reader=new FileReader();
 
-  const reader = new FileReader();
+  reader.onloadend=function(){
 
-  reader.onloadend = async function() {
+    const base64Audio=
+      reader.result.split(",")[1];
 
-    const base64Audio = reader.result.split(",")[1];
+    const formData=new URLSearchParams();
 
-    const formData = new URLSearchParams();
+    formData.append("audio",base64Audio);
 
-    formData.append("audio", base64Audio);
+    fetch(
+      "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec",
+      {
+        method:"POST",
+        mode:"no-cors",
+        headers:{
+          "Content-Type":
+          "application/x-www-form-urlencoded"
+        },
+        body:formData.toString()
+      }
+    )
+    .then(function(){
 
-    try {
-
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1ooFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxoICPQ/exec",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: formData.toString()
-        }
-      );
-
-      status.innerText =
+      status.innerText=
         "✅ Submitted successfully. Thank you for chanting Namokar.";
 
-      submitButton.disabled = true;
+      submitButton.disabled=true;
 
-    } catch (error) {
+    })
+    .catch(function(error){
 
-      status.innerText =
+      status.innerText=
         "Submission failed. Please try again.";
 
       console.error(error);
-    }
+
+    });
 
   };
 
   reader.readAsDataURL(audioBlob);
-
 };
+
+</script>
+
+</body>
+</html>
