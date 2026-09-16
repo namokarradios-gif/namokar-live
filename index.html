@@ -184,17 +184,45 @@ submitButton.onclick = async function() {
 
   status.innerText = "Submitting...";
 
-  /*
-    GOOGLE APPS SCRIPT URL WILL BE ADDED HERE
-    IN THE NEXT STEP.
-  */
+  const reader = new FileReader();
 
-  status.innerText =
-    "Recording is ready. Submission connection will be added next.";
+  reader.onloadend = async function() {
+
+    const base64Audio = reader.result.split(",")[1];
+
+    const formData = new URLSearchParams();
+
+    formData.append("audio", base64Audio);
+
+    try {
+
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1ooFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxoICPQ/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: formData.toString()
+        }
+      );
+
+      status.innerText =
+        "✅ Submitted successfully. Thank you for chanting Namokar.";
+
+      submitButton.disabled = true;
+
+    } catch (error) {
+
+      status.innerText =
+        "Submission failed. Please try again.";
+
+      console.error(error);
+    }
+
+  };
+
+  reader.readAsDataURL(audioBlob);
 
 };
-
-</script>
-
-</body>
-</html>
