@@ -45,12 +45,24 @@ button{
   cursor:pointer;
 }
 
-#record{background:#f59e0b;color:white}
-#stop{background:#dc2626;color:white}
-#submit{background:#16a34a;color:white}
+#record{
+  background:#f59e0b;
+  color:white;
+}
+
+#stop{
+  background:#dc2626;
+  color:white;
+}
+
+#submit{
+  background:#16a34a;
+  color:white;
+}
 
 button:disabled{
   opacity:.4;
+  cursor:not-allowed;
 }
 
 audio{
@@ -71,10 +83,13 @@ audio{
 <div class="box">
 
 <h1>NAMOKAR RADIO</h1>
+
 <h2>CHANT NAMOKAR</h2>
+
 <p>Your voice on Namokar Radio</p>
 
 <button id="record">🎙️ RECORD</button>
+
 <button id="stop" disabled>⏹️ STOP</button>
 
 <audio id="audio" controls></audio>
@@ -88,114 +103,166 @@ audio{
 <script>
 
 let recorder;
-let audioChunks=[];
-let audioBlob=null;
+let audioChunks = [];
+let audioBlob = null;
 
-const recordButton=document.getElementById("record");
-const stopButton=document.getElementById("stop");
-const submitButton=document.getElementById("submit");
-const audioPlayer=document.getElementById("audio");
-const status=document.getElementById("status");
+const recordButton = document.getElementById("record");
+const stopButton = document.getElementById("stop");
+const submitButton = document.getElementById("submit");
+const audioPlayer = document.getElementById("audio");
+const status = document.getElementById("status");
 
-recordButton.onclick=async function(){
+
+/* RECORD */
+
+recordButton.onclick = async function(){
 
   try{
 
-    const stream=await navigator.mediaDevices.getUserMedia({
-      audio:true
-    });
-
-    audioChunks=[];
-
-    recorder=new MediaRecorder(stream);
-
-    recorder.ondataavailable=function(e){
-      if(e.data.size>0){
-        audioChunks.push(e.data);
-      }
-    };
-
-    recorder.onstop=function(){
-
-      audioBlob=new Blob(audioChunks,{
-        type:"audio/webm"
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        audio:true
       });
 
-      audioPlayer.src=URL.createObjectURL(audioBlob);
+    audioChunks = [];
 
-      submitButton.disabled=false;
+    recorder = new MediaRecorder(stream);
 
-      status.innerText=
+    recorder.ondataavailable = function(event){
+
+      if(event.data.size > 0){
+        audioChunks.push(event.data);
+      }
+
+    };
+
+
+    recorder.onstop = function(){
+
+      audioBlob = new Blob(
+        audioChunks,
+        {type:"audio/webm"}
+      );
+
+      audioPlayer.src =
+        URL.createObjectURL(audioBlob);
+
+      submitButton.disabled = false;
+
+      status.innerText =
         "Recording ready. Play it, then tap SUBMIT.";
 
-      stream.getTracks().forEach(track=>track.stop());
+      stream.getTracks().forEach(
+        track => track.stop()
+      );
+
     };
+
 
     recorder.start();
 
-    recordButton.disabled=true;
-    stopButton.disabled=false;
+    recordButton.disabled = true;
 
-    status.innerText="🔴 Recording... Chant Namokar.";
+    stopButton.disabled = false;
 
-  }catch(error){
+    status.innerText =
+      "🔴 Recording... Chant Namokar.";
 
-    status.innerText=
+  }
+
+  catch(error){
+
+    status.innerText =
       "Microphone access was not allowed.";
 
     console.error(error);
+
   }
+
 };
 
-stopButton.onclick=function(){
 
-  if(recorder && recorder.state!=="inactive"){
+/* STOP */
+
+stopButton.onclick = function(){
+
+  if(
+    recorder &&
+    recorder.state !== "inactive"
+  ){
+
     recorder.stop();
-    recordButton.disabled=false;
-    stopButton.disabled=true;
+
+    recordButton.disabled = false;
+
+    stopButton.disabled = true;
+
   }
+
 };
 
-submitButton.onclick=function(){
 
-  if(!audioBlob)return;
+/* SUBMIT */
 
-  status.innerText="Submitting...";
+submitButton.onclick = function(){
 
-  const reader=new FileReader();
+  if(!audioBlob){
+    return;
+  }
 
-  reader.onloadend=function(){
+  status.innerText =
+    "Submitting...";
 
-    const base64Audio=
+
+  const reader =
+    new FileReader();
+
+
+  reader.onloadend = function(){
+
+    const base64Audio =
       reader.result.split(",")[1];
 
-    const formData=new URLSearchParams();
 
-    formData.append("audio",base64Audio);
+    const formData =
+      new URLSearchParams();
+
+
+    formData.append(
+      "audio",
+      base64Audio
+    );
+
 
     fetch(
-      "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec",
+      "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1ooFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxoICPQ/exec",
       {
         method:"POST",
+
         mode:"no-cors",
+
         headers:{
           "Content-Type":
           "application/x-www-form-urlencoded"
         },
-        body:formData.toString()
+
+        body:
+          formData.toString()
       }
     )
+
     .then(function(){
 
-      status.innerText=
+      status.innerText =
         "✅ Submitted successfully. Thank you for chanting Namokar.";
 
-      submitButton.disabled=true;
+      submitButton.disabled = true;
 
     })
+
     .catch(function(error){
 
-      status.innerText=
+      status.innerText =
         "Submission failed. Please try again.";
 
       console.error(error);
@@ -204,7 +271,9 @@ submitButton.onclick=function(){
 
   };
 
+
   reader.readAsDataURL(audioBlob);
+
 };
 
 </script>
