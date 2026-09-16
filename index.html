@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Namokar Radio</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111827;
+      color: white;
+      text-align: center;
+    }
+
+    .box {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 45px 20px;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-top: 0;
+      font-weight: normal;
+    }
+
+    p {
+      color: #d1d5db;
+      margin-bottom: 35px;
+    }
+
+    button {
+      width: 190px;
+      padding: 18px;
+      margin: 8px;
+      border: none;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #record {
+      background: #f59e0b;
+      color: white;
+    }
+
+    #stop {
+      background: #dc2626;
+      color: white;
+    }
+
+    #submit {
+      background: #16a34a;
+      color: white;
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    audio {
+      width: 100%;
+      margin: 25px 0;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 17px;
+      color: #fbbf24;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h1>NAMOKAR RADIO</h1>
+
+  <h2>CHANT NAMOKAR</h2>
+
+  <p>Your voice on Namokar Radio</p>
+
+  <button id="record">🎙️ RECORD</button>
+
+  <button id="stop" disabled>⏹️ STOP</button>
+
+  <audio id="audio" controls></audio>
+
+  <button id="submit" disabled>✅ SUBMIT</button>
+
+  <div id="status">Tap RECORD to begin</div>
+
+</div>
+
+<script>
+
+let recorder;
+let audioChunks = [];
+let audioBlob = null;
+
+const recordButton = document.getElementById("record");
+const stopButton = document.getElementById("stop");
+const submitButton = document.getElementById("submit");
+const audioPlayer = document.getElementById("audio");
+const status = document.getElementById("status");
+
+recordButton.onclick = async function() {
+
+  try {
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true
+    });
+
+    audioChunks = [];
+
+    recorder = new MediaRecorder(stream);
+
+    recorder.ondataavailable = function(event) {
+      if (event.data.size > 0) {
+        audioChunks.push(event.data);
+      }
+    };
+
+    recorder.onstop = function() {
+
+      audioBlob = new Blob(audioChunks, {
+        type: "audio/webm"
+      });
+
+      audioPlayer.src = URL.createObjectURL(audioBlob);
+
+      submitButton.disabled = false;
+
+      status.innerText = "Recording ready. Tap PLAY to listen, then SUBMIT.";
+
+      stream.getTracks().forEach(track => track.stop());
+    };
+
+    recorder.start();
+
+    recordButton.disabled = true;
+    stopButton.disabled = false;
+
+    status.innerText = "🔴 Recording... Chant Namokar.";
+
+  } catch (error) {
+
+    status.innerText =
+      "Microphone access was not allowed. Please allow microphone access.";
+
+    console.error(error);
+  }
+};
+
+
+stopButton.onclick = function() {
+
+  if (recorder && recorder.state !== "inactive") {
+
+    recorder.stop();
+
+    recordButton.disabled = false;
+    stopButton.disabled = true;
+
+  }
+};
+
+
+submitButton.onclick = async function() {
+
+  if (!audioBlob) {
+    return;
+  }
+
+  status.innerText = "Submitting...";
+
+  /*
+    GOOGLE APPS SCRIPT URL WILL BE ADDED HERE
+    IN THE NEXT STEP.
+  */
+
+  status.innerText =
+    "Recording is ready. Submission connection will be added next.";
+
+};
+
+</script>
+
+</body>
+</html>
