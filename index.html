@@ -5,6 +5,10 @@
 <title>Namokar Radio</title>
 
 <style>
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
@@ -14,44 +18,66 @@ body{
 }
 
 .box{
-  max-width:500px;
+  max-width:480px;
   margin:auto;
-  padding:40px 20px;
+  padding:18px 15px;
 }
 
 h1{
-  font-size:34px;
-  margin-bottom:10px;
+  font-size:28px;
+  margin:4px 0 5px;
 }
 
 h2{
-  font-size:22px;
+  font-size:19px;
   font-weight:normal;
+  margin:4px 0 7px;
 }
 
 p{
   color:#d1d5db;
-  margin-bottom:25px;
+  margin:5px 0 12px;
+  font-size:15px;
+  line-height:1.4;
 }
 
 input{
   width:90%;
-  max-width:380px;
-  padding:15px;
-  margin:7px;
+  max-width:360px;
+  padding:10px 12px;
+  margin:4px;
   border:0;
-  border-radius:10px;
+  border-radius:8px;
+  font-size:16px;
+}
+
+#devoteeName{
   font-size:18px;
-  box-sizing:border-box;
+  font-weight:bold;
+  margin:6px 0;
+  min-height:22px;
+}
+
+#onair{
+  font-size:18px;
+  color:#ef4444;
+  font-weight:bold;
+  margin:5px 0;
+  min-height:22px;
+}
+
+#timer{
+  font-size:23px;
+  margin:3px;
 }
 
 button{
-  width:190px;
-  padding:18px;
-  margin:8px;
+  width:150px;
+  padding:11px;
+  margin:4px;
   border:0;
-  border-radius:12px;
-  font-size:20px;
+  border-radius:9px;
+  font-size:17px;
   font-weight:bold;
   cursor:pointer;
 }
@@ -69,6 +95,7 @@ button{
 #submit{
   background:#16a34a;
   color:white;
+  width:180px;
 }
 
 button:disabled{
@@ -78,30 +105,13 @@ button:disabled{
 
 audio{
   width:100%;
-  margin:25px 0;
-}
-
-#devoteeName{
-  font-size:20px;
-  font-weight:bold;
-  margin:15px 0;
-}
-
-#onair{
-  font-size:20px;
-  color:#ef4444;
-  font-weight:bold;
-  margin:15px 0;
-}
-
-#timer{
-  font-size:26px;
-  margin:10px;
+  height:42px;
+  margin:7px 0 4px;
 }
 
 #status{
-  margin-top:20px;
-  font-size:17px;
+  margin-top:5px;
+  font-size:14px;
   color:#fbbf24;
 }
 </style>
@@ -139,7 +149,6 @@ Your voice on Namokar Radio<br>
 <div id="timer">00:00</div>
 
 <button id="record">🎙️ RECORD</button>
-
 <button id="stop" disabled>⏹️ STOP</button>
 
 <audio id="audio" controls></audio>
@@ -153,299 +162,246 @@ Your voice on Namokar Radio<br>
 <script>
 
 let recorder;
-let audioChunks = [];
-let audioBlob = null;
-let timerInterval = null;
-let seconds = 0;
-let maxTimer = null;
+let audioChunks=[];
+let audioBlob=null;
+let timerInterval=null;
+let seconds=0;
+let maxTimer=null;
 
-const recordButton = document.getElementById("record");
-const stopButton = document.getElementById("stop");
-const submitButton = document.getElementById("submit");
-const audioPlayer = document.getElementById("audio");
-const status = document.getElementById("status");
-const firstNameInput = document.getElementById("firstName");
-const surnameInput = document.getElementById("surname");
-const devoteeName = document.getElementById("devoteeName");
-const onair = document.getElementById("onair");
-const timer = document.getElementById("timer");
+const recordButton=document.getElementById("record");
+const stopButton=document.getElementById("stop");
+const submitButton=document.getElementById("submit");
+const audioPlayer=document.getElementById("audio");
+const status=document.getElementById("status");
+const firstNameInput=document.getElementById("firstName");
+const surnameInput=document.getElementById("surname");
+const devoteeName=document.getElementById("devoteeName");
+const onair=document.getElementById("onair");
+const timer=document.getElementById("timer");
 
 function getFullName(){
-
   return (
-    firstNameInput.value.trim() +
-    " " +
+    firstNameInput.value.trim()+" "+
     surnameInput.value.trim()
   ).trim();
-
 }
 
 function updateTimer(){
 
   seconds++;
 
-  let minutes =
-    String(Math.floor(seconds / 60)).padStart(2,"0");
+  let minutes=
+    String(Math.floor(seconds/60)).padStart(2,"0");
 
-  let secs =
-    String(seconds % 60).padStart(2,"0");
+  let secs=
+    String(seconds%60).padStart(2,"0");
 
-  timer.innerText =
-    minutes + ":" + secs;
-
+  timer.innerText=minutes+":"+secs;
 }
 
 
 /* RECORD */
 
-recordButton.onclick = async function(){
+recordButton.onclick=async function(){
 
-  const firstName =
-    firstNameInput.value.trim();
-
-  const surname =
-    surnameInput.value.trim();
+  const firstName=firstNameInput.value.trim();
+  const surname=surnameInput.value.trim();
 
   if(!firstName || !surname){
-
-    status.innerText =
-      "Please enter First Name and Surname.";
-
+    status.innerText="Please enter First Name and Surname.";
     return;
-
   }
 
-  const fullName =
-    getFullName();
-
-  devoteeName.innerText =
-    fullName;
+  devoteeName.innerText=getFullName();
 
   try{
 
-    const stream =
+    const stream=
       await navigator.mediaDevices.getUserMedia({
         audio:true
       });
 
-    audioChunks = [];
+    audioChunks=[];
 
-    recorder =
-      new MediaRecorder(stream);
+    recorder=new MediaRecorder(stream);
 
-    recorder.ondataavailable =
-      function(event){
+    recorder.ondataavailable=function(event){
+      if(event.data.size>0){
+        audioChunks.push(event.data);
+      }
+    };
 
-        if(event.data.size > 0){
-          audioChunks.push(event.data);
-        }
+    recorder.onstop=function(){
 
-      };
+      audioBlob=new Blob(
+        audioChunks,
+        {type:"audio/webm"}
+      );
 
-    recorder.onstop =
-      function(){
+      audioPlayer.src=
+        URL.createObjectURL(audioBlob);
 
-        audioBlob =
-          new Blob(
-            audioChunks,
-            {type:"audio/webm"}
-          );
+      submitButton.disabled=false;
 
-        audioPlayer.src =
-          URL.createObjectURL(audioBlob);
+      onair.innerText="";
 
-        submitButton.disabled = false;
+      status.innerText=
+        "Recording ready. Play it, then tap SUBMIT.";
 
-        onair.innerText = "";
-
-        status.innerText =
-          "Recording ready. Play it, then tap SUBMIT.";
-
-        stream.getTracks().forEach(
-          track => track.stop()
-        );
-
-      };
+      stream.getTracks().forEach(
+        track=>track.stop()
+      );
+    };
 
     recorder.start();
 
-    recordButton.disabled = true;
-    stopButton.disabled = false;
-    submitButton.disabled = true;
+    recordButton.disabled=true;
+    stopButton.disabled=false;
+    submitButton.disabled=true;
 
-    seconds = 0;
-    timer.innerText = "00:00";
+    seconds=0;
+    timer.innerText="00:00";
 
-    timerInterval =
+    timerInterval=
       setInterval(updateTimer,1000);
 
-    onair.innerText =
+    onair.innerText=
       "🔴 ON AIR • Recording";
 
-    status.innerText =
+    status.innerText=
       "Chant Namokar Jaap";
 
-    maxTimer =
-      setTimeout(function(){
+    maxTimer=setTimeout(function(){
 
-        if(
-          recorder &&
-          recorder.state !== "inactive"
-        ){
+      if(
+        recorder &&
+        recorder.state!=="inactive"
+      ){
 
-          recorder.stop();
+        recorder.stop();
 
-          recordButton.disabled = false;
-          stopButton.disabled = true;
+        recordButton.disabled=false;
+        stopButton.disabled=true;
 
-          clearInterval(timerInterval);
+        clearInterval(timerInterval);
 
-          status.innerText =
-            "5 minutes completed. Recording ready.";
+        status.innerText=
+          "5 minutes completed. Recording ready.";
+      }
 
-        }
-
-      },300000);
+    },300000);
 
   }
 
   catch(error){
 
-    status.innerText =
+    status.innerText=
       "Microphone access was not allowed.";
 
     console.error(error);
 
   }
-
 };
 
 
 /* STOP */
 
-stopButton.onclick = function(){
+stopButton.onclick=function(){
 
   if(
     recorder &&
-    recorder.state !== "inactive"
+    recorder.state!=="inactive"
   ){
 
     recorder.stop();
 
-    recordButton.disabled = false;
-    stopButton.disabled = true;
+    recordButton.disabled=false;
+    stopButton.disabled=true;
 
     clearInterval(timerInterval);
     clearTimeout(maxTimer);
 
-    onair.innerText = "";
-
+    onair.innerText="";
   }
-
 };
 
 
 /* SUBMIT */
 
-submitButton.onclick = function(){
+submitButton.onclick=function(){
 
   if(!audioBlob){
     return;
   }
 
-  const firstName =
+  const firstName=
     firstNameInput.value.trim();
 
-  const surname =
+  const surname=
     surnameInput.value.trim();
 
-  const fullName =
+  const fullName=
     getFullName();
 
-  status.innerText =
-    "Submitting...";
+  status.innerText="Submitting...";
 
-  const now =
-    new Date();
+  const now=new Date();
 
-  const timestamp =
-    now.getFullYear() + "-" +
-    String(now.getMonth()+1).padStart(2,"0") + "-" +
-    String(now.getDate()).padStart(2,"0") + "_" +
-    String(now.getHours()).padStart(2,"0") + "-" +
-    String(now.getMinutes()).padStart(2,"0") + "-" +
+  const timestamp=
+    now.getFullYear()+"-"+
+    String(now.getMonth()+1).padStart(2,"0")+"-"+
+    String(now.getDate()).padStart(2,"0")+"_"+
+
+    String(now.getHours()).padStart(2,"0")+"-"+
+    String(now.getMinutes()).padStart(2,"0")+"-"+
     String(now.getSeconds()).padStart(2,"0");
 
-  const reader =
-    new FileReader();
+  const reader=new FileReader();
 
-  reader.onloadend =
-    function(){
+  reader.onloadend=function(){
 
-      const base64Audio =
-        reader.result.split(",")[1];
+    const base64Audio=
+      reader.result.split(",")[1];
 
-      const formData =
-        new URLSearchParams();
+    const formData=
+      new URLSearchParams();
 
-      formData.append(
-        "audio",
-        base64Audio
-      );
+    formData.append("audio",base64Audio);
+    formData.append("firstName",firstName);
+    formData.append("surname",surname);
+    formData.append("fullName",fullName);
+    formData.append("timestamp",timestamp);
 
-      formData.append(
-        "firstName",
-        firstName
-      );
+    fetch(
+      "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec",
+      {
+        method:"POST",
+        mode:"no-cors",
+        headers:{
+          "Content-Type":
+          "application/x-www-form-urlencoded"
+        },
+        body:formData.toString()
+      }
+    )
+    .then(function(){
 
-      formData.append(
-        "surname",
-        surname
-      );
+      status.innerText=
+        "✅ Submitted to Namokar Radio. Thank you!";
 
-      formData.append(
-        "fullName",
-        fullName
-      );
+      submitButton.disabled=true;
 
-      formData.append(
-        "timestamp",
-        timestamp
-      );
+    })
+    .catch(function(error){
 
-      fetch(
-        "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec",
-        {
-          method:"POST",
-          mode:"no-cors",
-          headers:{
-            "Content-Type":
-            "application/x-www-form-urlencoded"
-          },
-          body:
-            formData.toString()
-        }
-      )
+      status.innerText=
+        "Submission failed. Please try again.";
 
-      .then(function(){
+      console.error(error);
 
-        status.innerText =
-          "✅ Submitted to Namokar Radio. Thank you!";
+    });
 
-        submitButton.disabled = true;
-
-      })
-
-      .catch(function(error){
-
-        status.innerText =
-          "Submission failed. Please try again.";
-
-        console.error(error);
-
-      });
-
-    };
+  };
 
   reader.readAsDataURL(audioBlob);
 
