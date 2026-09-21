@@ -120,6 +120,15 @@ audio{
   margin-top:5px;
   font-size:14px;
   color:#fbbf24;
+  min-height:22px;
+}
+
+#status.success{
+  font-size:21px;
+  line-height:1.5;
+  font-weight:bold;
+  color:#22c55e;
+  margin-top:12px;
 }
 </style>
 </head>
@@ -188,10 +197,12 @@ const onair=document.getElementById("onair");
 const timer=document.getElementById("timer");
 
 function getFullName(){
+
   return (
     firstNameInput.value.trim()+" "+
     surnameInput.value.trim()
   ).trim();
+
 }
 
 
@@ -215,6 +226,39 @@ function updateTimer(){
 
   timer.innerText=
     minutes+":"+secs;
+}
+
+
+/* RESET FOR NEXT DEVOTEE */
+
+function resetForm(){
+
+  firstNameInput.value="";
+  surnameInput.value="";
+
+  devoteeName.innerText="";
+  onair.innerText="";
+
+  audioPlayer.pause();
+  audioPlayer.removeAttribute("src");
+  audioPlayer.load();
+
+  audioBlob=null;
+  audioChunks=[];
+
+  seconds=0;
+  timer.innerText="05:00";
+
+  recordButton.disabled=false;
+  stopButton.disabled=true;
+  submitButton.disabled=true;
+
+  clearInterval(timerInterval);
+  clearTimeout(maxTimer);
+
+  status.className="";
+  status.innerText=
+    "Enter your name and tap RECORD";
 }
 
 
@@ -274,6 +318,8 @@ recordButton.onclick=async function(){
 
       onair.innerText="";
 
+      status.className="";
+
       status.innerText=
         "Recording ready. Play it, then tap SUBMIT.";
 
@@ -290,7 +336,6 @@ recordButton.onclick=async function(){
     submitButton.disabled=true;
 
     seconds=0;
-
     timer.innerText="05:00";
 
     timerInterval=
@@ -381,8 +426,8 @@ submitButton.onclick=function(){
   const fullName=
     getFullName();
 
-  status.innerText=
-    "Submitting...";
+  status.className="";
+  status.innerText="Submitting...";
 
   const now=
     new Date();
@@ -448,14 +493,24 @@ submitButton.onclick=function(){
 
     .then(function(){
 
-      status.innerText=
-        "✅ Submitted to Namokar Radio. Thank you!";
+      status.className="success";
+
+      status.innerHTML=
+        "✅ SUBMITTED TO NAMOKAR RADIO<br>Thank you!";
 
       submitButton.disabled=true;
+
+      setTimeout(function(){
+
+        resetForm();
+
+      },2000);
 
     })
 
     .catch(function(error){
+
+      status.className="";
 
       status.innerText=
         "Submission failed. Please try again.";
