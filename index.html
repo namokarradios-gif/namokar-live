@@ -58,11 +58,33 @@ input{
   min-height:22px;
 }
 
+#mic{
+  display:none;
+  font-size:34px;
+  margin:3px 0;
+}
+
+#mic.blink{
+  display:block;
+  animation:blinkMic 1s infinite;
+}
+
+@keyframes blinkMic{
+  0%,100%{
+    opacity:1;
+    transform:scale(1);
+  }
+  50%{
+    opacity:.35;
+    transform:scale(1.08);
+  }
+}
+
 #onair{
   font-size:18px;
   color:#ef4444;
   font-weight:bold;
-  margin:5px 0;
+  margin:3px 0;
   min-height:22px;
 }
 
@@ -130,6 +152,21 @@ audio{
   color:#22c55e;
   margin-top:12px;
 }
+
+.listen{
+  display:block;
+  margin-top:18px;
+  padding-top:12px;
+  border-top:1px solid #374151;
+  color:#60a5fa;
+  text-decoration:none;
+  font-size:16px;
+  font-weight:bold;
+}
+
+.listen:hover{
+  text-decoration:underline;
+}
 </style>
 </head>
 
@@ -160,6 +197,8 @@ Your voice on Namokar Radio<br>
 
 <div id="devoteeName"></div>
 
+<div id="mic">🎙️</div>
+
 <div id="onair"></div>
 
 <div id="timerLabel">TIME REMAINING</div>
@@ -173,6 +212,13 @@ Your voice on Namokar Radio<br>
 <button id="submit" disabled>✅ SUBMIT</button>
 
 <div id="status">Enter your name and tap RECORD</div>
+
+<a
+  class="listen"
+  href="https://namokar.radio4.in"
+  target="_blank">
+  🎙️ Listen to Namokar Radio
+</a>
 
 </div>
 
@@ -193,6 +239,7 @@ const status=document.getElementById("status");
 const firstNameInput=document.getElementById("firstName");
 const surnameInput=document.getElementById("surname");
 const devoteeName=document.getElementById("devoteeName");
+const mic=document.getElementById("mic");
 const onair=document.getElementById("onair");
 const timer=document.getElementById("timer");
 
@@ -239,6 +286,8 @@ function resetForm(){
   devoteeName.innerText="";
   onair.innerText="";
 
+  mic.classList.remove("blink");
+
   audioPlayer.pause();
   audioPlayer.removeAttribute("src");
   audioPlayer.load();
@@ -259,6 +308,7 @@ function resetForm(){
   status.className="";
   status.innerText=
     "Enter your name and tap RECORD";
+
 }
 
 
@@ -318,6 +368,8 @@ recordButton.onclick=async function(){
 
       onair.innerText="";
 
+      mic.classList.remove("blink");
+
       status.className="";
 
       status.innerText=
@@ -340,6 +392,8 @@ recordButton.onclick=async function(){
 
     timerInterval=
       setInterval(updateTimer,1000);
+
+    mic.classList.add("blink");
 
     onair.innerText=
       "🔴 ON AIR • Recording";
@@ -401,6 +455,8 @@ stopButton.onclick=function(){
 
     clearInterval(timerInterval);
     clearTimeout(maxTimer);
+
+    mic.classList.remove("blink");
 
     onair.innerText="";
 
