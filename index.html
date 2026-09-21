@@ -58,10 +58,14 @@ input{
   min-height:22px;
 }
 
+/* GREEN MICROPHONE */
+
 #mic{
   display:none;
-  font-size:34px;
-  margin:3px 0;
+  width:42px;
+  height:42px;
+  margin:3px auto;
+  color:#22c55e;
 }
 
 #mic.blink{
@@ -69,13 +73,20 @@ input{
   animation:blinkMic 1s infinite;
 }
 
+#mic svg{
+  width:100%;
+  height:100%;
+  fill:currentColor;
+}
+
 @keyframes blinkMic{
   0%,100%{
     opacity:1;
     transform:scale(1);
   }
+
   50%{
-    opacity:.35;
+    opacity:.3;
     transform:scale(1.08);
   }
 }
@@ -197,7 +208,14 @@ Your voice on Namokar Radio<br>
 
 <div id="devoteeName"></div>
 
-<div id="mic">🎙️</div>
+<!-- GREEN BLINKING MICROPHONE -->
+
+<div id="mic">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3z"/>
+    <path d="M17.3 11a5.3 5.3 0 0 1-10.6 0H5a7 7 0 0 0 6 6.92V21H8v2h8v-2h-3v-3.08A7 7 0 0 0 19 11h-1.7z"/>
+  </svg>
+</div>
 
 <div id="onair"></div>
 
@@ -308,7 +326,6 @@ function resetForm(){
   status.className="";
   status.innerText=
     "Enter your name and tap RECORD";
-
 }
 
 
