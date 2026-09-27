@@ -351,7 +351,7 @@ async function setupAudio(){
     tanpuraSpeakerGain =
         audioContext.createGain();
 
-    tanpuraSpeakerGain.gain.value = 0.03;
+    tanpuraSpeakerGain.gain.value = 0;
 
 
     /*
@@ -566,8 +566,9 @@ recordBtn.addEventListener(
             */
 
             try{
-
-                await tanpura.play();
+tanpuraSpeakerGain.gain.value = 0;
+await tanpura.play();
+                tanpuraSpeakerGain.gain.linearRampToValueAtTime(0.03, audioContext.currentTime + 2);
 
             }catch(e){
 
