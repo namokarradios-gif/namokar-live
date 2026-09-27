@@ -397,7 +397,11 @@ recordButton.onclick=async function(){
 
     micStream=
       await navigator.mediaDevices.getUserMedia({
-        audio:true
+        audio:{
+    echoCancellation:false,
+    noiseSuppression:false,
+    autoGainControl:false
+}
       });
 
 
