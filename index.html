@@ -58,8 +58,6 @@ input{
   min-height:22px;
 }
 
-/* GREEN MICROPHONE */
-
 #mic{
   display:none;
   width:42px;
@@ -189,8 +187,7 @@ audio{
 
 <h2>Chant Namokar in your Voice</h2>
 
-<p><strong>Up to 5 minutes</strong>
-</p>
+<p><strong>Up to 5 minutes</strong></p>
 
 <input
   id="firstName"
@@ -205,8 +202,6 @@ audio{
   autocomplete="family-name">
 
 <div id="devoteeName"></div>
-
-<!-- GREEN BLINKING MICROPHONE -->
 
 <div id="mic">
   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -236,6 +231,9 @@ audio{
   🎙️ Listen to Live Namokar Radio
 </a>
 
+<!-- TANPURA BACKGROUND -->
+<audio id="tanpura" src="tanpura.mp3" preload="auto"></audio>
+
 </div>
 
 <script>
@@ -243,14 +241,24 @@ audio{
 let recorder;
 let audioChunks=[];
 let audioBlob=null;
+
 let timerInterval=null;
 let seconds=0;
 let maxTimer=null;
 
+let micStream=null;
+let audioContext=null;
+let micSource=null;
+let tanpuraSource=null;
+let mixDestination=null;
+
 const recordButton=document.getElementById("record");
 const stopButton=document.getElementById("stop");
 const submitButton=document.getElementById("submit");
+
 const audioPlayer=document.getElementById("audio");
+const tanpura=document.getElementById("tanpura");
+
 const status=document.getElementById("status");
 const firstNameInput=document.getElementById("firstName");
 const surnameInput=document.getElementById("surname");
@@ -292,9 +300,44 @@ function updateTimer(){
 }
 
 
+/* STOP ALL AUDIO */
+
+function stopAllAudio(){
+
+  try{
+    tanpura.pause();
+    tanpura.currentTime=0;
+  }catch(e){}
+
+  if(micStream){
+
+    micStream.getTracks().forEach(
+      track=>track.stop()
+    );
+
+    micStream=null;
+  }
+
+  if(audioContext){
+
+    try{
+      audioContext.close();
+    }catch(e){}
+
+    audioContext=null;
+  }
+
+  micSource=null;
+  tanpuraSource=null;
+  mixDestination=null;
+}
+
+
 /* RESET FOR NEXT DEVOTEE */
 
 function resetForm(){
+
+  stopAllAudio();
 
   firstNameInput.value="";
   surnameInput.value="";
@@ -350,34 +393,132 @@ recordButton.onclick=async function(){
 
   try{
 
-    const stream=
+    /* MICROPHONE */
+
+    micStream=
       await navigator.mediaDevices.getUserMedia({
         audio:true
       });
 
+
+    /* AUDIO CONTEXT */
+
+    audioContext=
+      new (window.AudioContext ||
+      window.webkitAudioContext)();
+
+
+    await audioContext.resume();
+
+
+    /* MICROPHONE SOURCE */
+
+    micSource=
+      audioContext.createMediaStreamSource(
+        micStream
+      );
+
+
+    /* TANPURA SOURCE */
+
+    tanpura.currentTime=0;
+    tanpura.loop=true;
+
+    tanpuraSource=
+      audioContext.createMediaElementSource(
+        tanpura
+      );
+
+
+    /* MIXING DESTINATION */
+
+    mixDestination=
+      audioContext.createMediaStreamDestination();
+
+
+    /*
+      DEVOTEE VOICE
+      louder / clear
+    */
+
+    const micGain=
+      audioContext.createGain();
+
+    micGain.gain.value=1.0;
+
+
+    /*
+      TANPURA
+      soft background
+    */
+
+    const tanpuraGain=
+      audioContext.createGain();
+
+    tanpuraGain.gain.value=0.18;
+
+
+    /*
+      SEND BOTH INTO RECORDER
+    */
+
+    micSource.connect(micGain);
+    micGain.connect(mixDestination);
+
+    tanpuraSource.connect(tanpuraGain);
+    tanpuraGain.connect(mixDestination);
+
+
+    /*
+      ALSO SEND TO SPEAKERS
+      so devotee hears the Tanpura
+    */
+
+    tanpuraGain.connect(
+      audioContext.destination
+    );
+
+
+    /* MEDIA RECORDER */
+
     audioChunks=[];
 
+    let mimeType="audio/webm;codecs=opus";
+
+    if(!MediaRecorder.isTypeSupported(mimeType)){
+      mimeType="audio/webm";
+    }
+
     recorder=
-      new MediaRecorder(stream);
+      new MediaRecorder(
+        mixDestination.stream,
+        {type:mimeType}
+      );
+
 
     recorder.ondataavailable=function(event){
 
       if(event.data.size>0){
+
         audioChunks.push(event.data);
+
       }
 
     };
+
 
     recorder.onstop=function(){
 
       audioBlob=
         new Blob(
           audioChunks,
-          {type:"audio/webm"}
+          {type:recorder.mimeType || "audio/webm"}
         );
+
 
       audioPlayer.src=
         URL.createObjectURL(audioBlob);
+
 
       submitButton.disabled=false;
 
@@ -390,13 +531,25 @@ recordButton.onclick=async function(){
       status.innerText=
         "Recording ready. Play it, then tap SUBMIT.";
 
-      stream.getTracks().forEach(
-        track=>track.stop()
-      );
+
+      stopAllAudio();
 
     };
 
+
+    /* START */
+
     recorder.start();
+
+    tanpura.play().catch(function(error){
+
+      console.log(
+        "Tanpura playback error:",
+        error
+      );
+
+    });
+
 
     recordButton.disabled=true;
     stopButton.disabled=false;
@@ -414,7 +567,10 @@ recordButton.onclick=async function(){
       "🔴 ON AIR • Recording";
 
     status.innerText=
-      "Chant Namokar Jaap";
+      "Tanpura is playing softly. Chant Namokar Jaap";
+
+
+    /* AUTOMATIC 5 MINUTE STOP */
 
     maxTimer=
       setTimeout(function(){
@@ -443,6 +599,8 @@ recordButton.onclick=async function(){
   }
 
   catch(error){
+
+    stopAllAudio();
 
     status.innerText=
       "Microphone access was not allowed.";
@@ -512,41 +670,50 @@ submitButton.onclick=function(){
     String(now.getMinutes()).padStart(2,"0")+"-"+
     String(now.getSeconds()).padStart(2,"0");
 
+
   const reader=
     new FileReader();
+
 
   reader.onloadend=function(){
 
     const base64Audio=
       reader.result.split(",")[1];
 
+
     const formData=
       new URLSearchParams();
+
 
     formData.append(
       "audio",
       base64Audio
     );
 
+
     formData.append(
       "firstName",
       firstName
     );
+
 
     formData.append(
       "surname",
       surname
     );
 
+
     formData.append(
       "fullName",
       fullName
     );
 
+
     formData.append(
       "timestamp",
       timestamp
     );
+
 
     fetch(
       "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec",
@@ -571,6 +738,7 @@ submitButton.onclick=function(){
 
       submitButton.disabled=true;
 
+
       setTimeout(function(){
 
         resetForm();
@@ -578,6 +746,7 @@ submitButton.onclick=function(){
       },9000);
 
     })
+
 
     .catch(function(error){
 
@@ -591,6 +760,7 @@ submitButton.onclick=function(){
     });
 
   };
+
 
   reader.readAsDataURL(audioBlob);
 
