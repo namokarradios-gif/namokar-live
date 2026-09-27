@@ -466,11 +466,16 @@ recordButton.onclick=async function(){
       SEND BOTH INTO RECORDER
     */
 
-    micSource.connect(micGain);
-    micGain.connect(mixDestination);
+    const masterGain = audioContext.createGain();
+masterGain.gain.value = 0.60;
 
-    tanpuraSource.connect(tanpuraGain);
-    tanpuraGain.connect(mixDestination);
+micSource.connect(micGain);
+micGain.connect(masterGain);
+
+tanpuraSource.connect(tanpuraGain);
+tanpuraGain.connect(masterGain);
+
+masterGain.connect(mixDestination);
 
 
     /*
