@@ -1,415 +1,303 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Namokar Radio</title>
+
+<title>1008 Days Live Namokar Jaap</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
 
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#111827;
-  color:white;
-  text-align:center;
+    margin:0;
+    padding:20px;
+    font-family:Arial,sans-serif;
+    background:#fffdf7;
+    text-align:center;
+    color:#333;
 }
 
-.box{
-  max-width:480px;
-  margin:auto;
-  padding:18px 15px;
+.container{
+    max-width:500px;
+    margin:auto;
 }
 
 h1{
-  font-size:23px;
-  margin:4px 0 5px;
+    font-size:28px;
+    margin-bottom:5px;
 }
 
-h2{
-  font-size:19px;
-  font-weight:normal;
-  margin:4px 0 7px;
-}
-
-p{
-  color:#d1d5db;
-  margin:5px 0 12px;
-  font-size:15px;
-  line-height:1.4;
+.subtitle{
+    font-size:17px;
+    margin-bottom:20px;
 }
 
 input{
-  width:90%;
-  max-width:360px;
-  padding:10px 12px;
-  margin:4px;
-  border:0;
-  border-radius:8px;
-  font-size:16px;
+    width:90%;
+    padding:13px;
+    margin:6px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:17px;
+    box-sizing:border-box;
 }
 
-#devoteeName{
-  font-size:18px;
-  font-weight:bold;
-  margin:6px 0;
-  min-height:22px;
+#micStatus{
+    margin-top:18px;
+    font-weight:bold;
 }
 
-#mic{
-  display:none;
-  width:42px;
-  height:42px;
-  margin:3px auto;
-  color:#22c55e;
+.mic{
+    display:inline-block;
+    width:14px;
+    height:14px;
+    background:#16a34a;
+    border-radius:50%;
+    margin-right:7px;
 }
 
-#mic.blink{
-  display:block;
-  animation:blinkMic 1s infinite;
+.blink{
+    animation:blink 1s infinite;
 }
 
-#mic svg{
-  width:100%;
-  height:100%;
-  fill:currentColor;
-}
-
-@keyframes blinkMic{
-  0%,100%{
-    opacity:1;
-    transform:scale(1);
-  }
-
-  50%{
-    opacity:.3;
-    transform:scale(1.08);
-  }
+@keyframes blink{
+    0%,100%{opacity:1;}
+    50%{opacity:.25;}
 }
 
 #onair{
-  font-size:18px;
-  color:#ef4444;
-  font-weight:bold;
-  margin:3px 0;
-  min-height:22px;
-}
-
-#timerLabel{
-  font-size:12px;
-  color:#d1d5db;
-  margin-top:3px;
+    font-size:22px;
+    font-weight:bold;
+    color:#d00;
+    margin:10px 0;
 }
 
 #timer{
-  font-size:25px;
-  font-weight:bold;
-  margin:2px 0 4px;
+    font-size:24px;
+    font-weight:bold;
+    margin:10px;
 }
 
 button{
-  width:150px;
-  padding:11px;
-  margin:4px;
-  border:0;
-  border-radius:9px;
-  font-size:17px;
-  font-weight:bold;
-  cursor:pointer;
+    border:0;
+    border-radius:9px;
+    padding:13px 22px;
+    margin:6px;
+    font-size:17px;
+    cursor:pointer;
 }
 
-#record{
-  background:#f59e0b;
-  color:white;
+#recordBtn{
+    background:#c62828;
+    color:white;
 }
 
-#stop{
-  background:#dc2626;
-  color:white;
+#stopBtn{
+    background:#555;
+    color:white;
 }
 
-#submit{
-  background:#16a34a;
-  color:white;
-  width:180px;
+#submitBtn{
+    background:#16803c;
+    color:white;
 }
 
 button:disabled{
-  opacity:.4;
-  cursor:not-allowed;
+    opacity:.45;
 }
 
 audio{
-  width:100%;
-  height:42px;
-  margin:7px 0 4px;
+    width:95%;
+    margin-top:15px;
 }
 
-#status{
-  margin-top:5px;
-  font-size:14px;
-  color:#fbbf24;
-  min-height:22px;
+#message{
+    margin-top:15px;
+    font-weight:bold;
 }
 
-#status.success{
-  font-size:21px;
-  line-height:1.5;
-  font-weight:bold;
-  color:#22c55e;
-  margin-top:12px;
+.small{
+    font-size:14px;
+    color:#666;
+    margin-top:15px;
 }
 
-.listen{
-  display:block;
-  margin-top:18px;
-  padding-top:12px;
-  border-top:1px solid #374151;
-  color:#60a5fa;
-  text-decoration:none;
-  font-size:16px;
-  font-weight:bold;
-}
-
-.listen:hover{
-  text-decoration:underline;
-}
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="container">
 
-<h1>Join 24/7 Live Namokar Jaap</h1>
+<h1>🙏 Namokar Radio</h1>
 
-<h2>Chant Namokar in your Voice</h2>
-
-<p><strong>Up to 5 minutes</strong></p>
-
-<input
-  id="firstName"
-  type="text"
-  placeholder="First Name"
-  autocomplete="given-name">
-
-<input
-  id="surname"
-  type="text"
-  placeholder="Surname"
-  autocomplete="family-name">
-
-<div id="devoteeName"></div>
-
-<div id="mic">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3z"/>
-    <path d="M17.3 11a5.3 5.3 0 0 1-10.6 0H5a7 7 0 0 0 6 6.92V21H8v2h8v-2h-3v-3.08A7 7 0 0 0 19 11h-1.7z"/>
-  </svg>
+<div class="subtitle">
+<b>1008 DAYS LIVE NAMOKAR JAAP</b>
 </div>
 
-<div id="onair"></div>
+<input
+    type="text"
+    id="firstName"
+    placeholder="First Name"
+    autocomplete="given-name"
+>
 
-<div id="timerLabel">TIME REMAINING</div>
-<div id="timer">05:00</div>
+<input
+    type="text"
+    id="surname"
+    placeholder="Surname"
+    autocomplete="family-name"
+>
 
-<button id="record">🎙️ RECORD</button>
-<button id="stop" disabled>⏹️ STOP</button>
+<div id="micStatus">
+    <span class="mic"></span>
+    Microphone Ready
+</div>
 
-<audio id="audio" controls></audio>
+<div id="onair" style="display:none;">
+    🔴 ON AIR
+</div>
 
-<button id="submit" disabled>✅ SUBMIT</button>
+<div id="timer">
+    05:00
+</div>
 
-<div id="status">Enter your name and tap RECORD</div>
+<div>
 
-<a
-  class="listen"
-  href="https://namokar.radio4.in"
-  target="_blank">
-  🎙️ Listen to Live Namokar Radio
-</a>
+<button id="recordBtn">
+    🎙 RECORD
+</button>
 
-<!-- TANPURA BACKGROUND -->
-<audio id="tanpura" src="tanpura.mp3" preload="auto"></audio>
+<button id="stopBtn" disabled>
+    ⏹ STOP
+</button>
 
 </div>
+
+<audio id="preview" controls style="display:none;"></audio>
+
+<br>
+
+<button id="submitBtn" disabled>
+    SUBMIT
+</button>
+
+<div id="message"></div>
+
+<div class="small">
+Your voice will become part of the LIVE Namokar Jaap.
+</div>
+
+<audio
+    id="tanpura"
+    src="tanpura.mp3"
+    preload="auto"
+    loop>
+</audio>
+
+</div>
+
 
 <script>
 
-let recorder;
-let audioChunks=[];
-let audioBlob=null;
+const recordBtn = document.getElementById("recordBtn");
+const stopBtn = document.getElementById("stopBtn");
+const submitBtn = document.getElementById("submitBtn");
 
-let timerInterval=null;
-let seconds=0;
-let maxTimer=null;
+const preview = document.getElementById("preview");
+const tanpura = document.getElementById("tanpura");
 
-let micStream=null;
-let audioContext=null;
-let micSource=null;
-let tanpuraSource=null;
-let mixDestination=null;
+const micStatus = document.getElementById("micStatus");
+const onair = document.getElementById("onair");
+const timerDisplay = document.getElementById("timer");
+const message = document.getElementById("message");
 
-const recordButton=document.getElementById("record");
-const stopButton=document.getElementById("stop");
-const submitButton=document.getElementById("submit");
-
-const audioPlayer=document.getElementById("audio");
-const tanpura=document.getElementById("tanpura");
-
-const status=document.getElementById("status");
-const firstNameInput=document.getElementById("firstName");
-const surnameInput=document.getElementById("surname");
-const devoteeName=document.getElementById("devoteeName");
-const mic=document.getElementById("mic");
-const onair=document.getElementById("onair");
-const timer=document.getElementById("timer");
-
-function getFullName(){
-
-  return (
-    firstNameInput.value.trim()+" "+
-    surnameInput.value.trim()
-  ).trim();
-
-}
+const firstNameInput = document.getElementById("firstName");
+const surnameInput = document.getElementById("surname");
 
 
-/* COUNTDOWN */
+/* GOOGLE APPS SCRIPT */
 
-function updateTimer(){
-
-  seconds++;
-
-  let remaining=300-seconds;
-
-  if(remaining<0){
-    remaining=0;
-  }
-
-  let minutes=
-    String(Math.floor(remaining/60)).padStart(2,"0");
-
-  let secs=
-    String(remaining%60).padStart(2,"0");
-
-  timer.innerText=
-    minutes+":"+secs;
-}
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec";
 
 
-/* STOP ALL AUDIO */
+/* AUDIO VARIABLES */
 
-function stopAllAudio(){
+let audioContext = null;
 
-  try{
-    tanpura.pause();
-    tanpura.currentTime=0;
-  }catch(e){}
+let micStream = null;
+let micSource = null;
+let tanpuraSource = null;
 
-  if(micStream){
+let mixDestination = null;
 
-    micStream.getTracks().forEach(
-      track=>track.stop()
-    );
+let micGain = null;
+let tanpuraRecordGain = null;
+let tanpuraSpeakerGain = null;
+let masterGain = null;
 
-    micStream=null;
-  }
+let recorder = null;
 
-  if(audioContext){
+let chunks = [];
 
-    try{
-      audioContext.close();
-    }catch(e){}
+let recordedBlob = null;
 
-    audioContext=null;
-  }
+let timerInterval = null;
 
-  micSource=null;
-  tanpuraSource=null;
-  mixDestination=null;
-}
+let secondsRemaining = 300;
+
+let isRecording = false;
 
 
-/* RESET FOR NEXT DEVOTEE */
+/*
+IMPORTANT:
 
-function resetForm(){
+Create the AudioContext and audio graph ONCE.
 
-  stopAllAudio();
+We do NOT destroy it after every recording.
 
-  firstNameInput.value="";
-  surnameInput.value="";
+This is what makes:
 
-  devoteeName.innerText="";
-  onair.innerText="";
+RECORD → STOP → PLAY → RECORD AGAIN
 
-  mic.classList.remove("blink");
-
-  audioPlayer.pause();
-  audioPlayer.removeAttribute("src");
-  audioPlayer.load();
-
-  audioBlob=null;
-  audioChunks=[];
-
-  seconds=0;
-  timer.innerText="05:00";
-
-  recordButton.disabled=false;
-  stopButton.disabled=true;
-  submitButton.disabled=true;
-
-  clearInterval(timerInterval);
-  clearTimeout(maxTimer);
-
-  status.className="";
-  status.innerText=
-    "Enter your name and tap RECORD";
-}
+work properly on mobile.
+*/
 
 
-/* RECORD */
+async function setupAudio(){
 
-recordButton.onclick=async function(){
+    if(audioContext){
 
-  const firstName=
-    firstNameInput.value.trim();
+        if(audioContext.state === "suspended"){
+            await audioContext.resume();
+        }
 
-  const surname=
-    surnameInput.value.trim();
+        return;
+    }
 
-  if(!firstName || !surname){
-
-    status.innerText=
-      "Please enter First Name and Surname.";
-
-    return;
-  }
-
-  devoteeName.innerText=
-    getFullName();
-
-  try{
 
     /* MICROPHONE */
 
-    micStream=
-      await navigator.mediaDevices.getUserMedia({
-        audio:{
-    echoCancellation:false,
-    noiseSuppression:false,
-    autoGainControl:false
-}
-      });
+    micStream =
+        await navigator.mediaDevices.getUserMedia({
+
+            audio:{
+                echoCancellation:false,
+                noiseSuppression:false,
+                autoGainControl:false
+            }
+
+        });
 
 
     /* AUDIO CONTEXT */
 
-    audioContext=
-      new (window.AudioContext ||
-      window.webkitAudioContext)();
+    audioContext =
+        new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
 
 
     await audioContext.resume();
@@ -417,363 +305,630 @@ recordButton.onclick=async function(){
 
     /* MICROPHONE SOURCE */
 
-    micSource=
-      audioContext.createMediaStreamSource(
-        micStream
-      );
-
-
-    /* TANPURA SOURCE */
-
-    tanpura.currentTime=0;
-    tanpura.loop=true;
-
-    tanpuraSource=
-      audioContext.createMediaElementSource(
-        tanpura
-      );
-
-
-    /* MIXING DESTINATION */
-
-    mixDestination=
-      audioContext.createMediaStreamDestination();
-
-
-    /*
-      DEVOTEE VOICE
-      louder / clear
-    */
-
-    const micGain=
-      audioContext.createGain();
-
-    micGain.gain.value=1.00;
-
-
-    /*
-      TANPURA
-      soft background
-    */
-
-    const tanpuraGain=
-      audioContext.createGain();
-
-    tanpuraGain.gain.value=0.06;
-
-
-    /*
-      SEND BOTH INTO RECORDER
-    */
-
-    const masterGain = audioContext.createGain();
-masterGain.gain.value = 0.60;
-
-micSource.connect(micGain);
-micGain.connect(masterGain);
-
-tanpuraSource.connect(tanpuraGain);
-tanpuraGain.connect(masterGain);
-
-masterGain.connect(mixDestination);
-
-
-    /*
-      ALSO SEND TO SPEAKERS
-      so devotee hears the Tanpura
-    */
-
-    tanpuraGain.connect(
-      audioContext.destination
-    );
-
-
-    /* MEDIA RECORDER */
-
-    audioChunks=[];
-
-    let mimeType="audio/webm;codecs=opus";
-
-    if(!MediaRecorder.isTypeSupported(mimeType)){
-      mimeType="audio/webm";
-    }
-
-    recorder=
-      new MediaRecorder(
-        mixDestination.stream,
-        {type:mimeType}
-      );
-
-
-    recorder.ondataavailable=function(event){
-
-      if(event.data.size>0){
-
-        audioChunks.push(event.data);
-
-      }
-
-    };
-
-
-    recorder.onstop=function(){
-
-      audioBlob=
-        new Blob(
-          audioChunks,
-          {type:recorder.mimeType || "audio/webm"}
+    micSource =
+        audioContext.createMediaStreamSource(
+            micStream
         );
 
 
-      audioPlayer.src=
-        URL.createObjectURL(audioBlob);
+    /* TANPURA */
+
+    tanpura.loop = true;
+
+    tanpura.currentTime = 0;
 
 
-      submitButton.disabled=false;
-
-      onair.innerText="";
-
-      mic.classList.remove("blink");
-
-      status.className="";
-
-      status.innerText=
-        "Recording ready. Play it, then tap SUBMIT.";
+    tanpuraSource =
+        audioContext.createMediaElementSource(
+            tanpura
+        );
 
 
-      stopAllAudio();
+    /* RECORDING DESTINATION */
 
-    };
-
-
-    /* START */
-
-    recorder.start();
-
-    tanpura.play().catch(function(error){
-
-      console.log(
-        "Tanpura playback error:",
-        error
-      );
-
-    });
+    mixDestination =
+        audioContext.createMediaStreamDestination();
 
 
-    recordButton.disabled=true;
-    stopButton.disabled=false;
-    submitButton.disabled=true;
+    /* MICROPHONE GAIN */
 
-    seconds=0;
-    timer.innerText="05:00";
+    micGain =
+        audioContext.createGain();
 
-    timerInterval=
-      setInterval(updateTimer,1000);
-
-    mic.classList.add("blink");
-
-    onair.innerText=
-      "🔴 ON AIR • Recording";
-
-    status.innerText=
-      "Tanpura is playing softly. Chant Namokar Jaap";
+    micGain.gain.value = 1.00;
 
 
-    /* AUTOMATIC 5 MINUTE STOP */
+    /* TANPURA RECORDING GAIN */
 
-    maxTimer=
-      setTimeout(function(){
+    tanpuraRecordGain =
+        audioContext.createGain();
 
-        if(
-          recorder &&
-          recorder.state!=="inactive"
-        ){
+    tanpuraRecordGain.gain.value = 0.04;
 
-          recorder.stop();
 
-          recordButton.disabled=false;
-          stopButton.disabled=true;
+    /* TANPURA PHONE SPEAKER GAIN */
 
-          clearInterval(timerInterval);
+    tanpuraSpeakerGain =
+        audioContext.createGain();
 
-          timer.innerText="00:00";
+    tanpuraSpeakerGain.gain.value = 0.15;
 
-          status.innerText=
-            "5 minutes completed. Recording ready.";
+
+    /*
+    MASTER GAIN
+
+    This was added because it removed
+    the crackling/distortion.
+    */
+
+    masterGain =
+        audioContext.createGain();
+
+    masterGain.gain.value = 0.60;
+
+
+    /*
+    MICROPHONE → MASTER
+    */
+
+    micSource.connect(
+        micGain
+    );
+
+    micGain.connect(
+        masterGain
+    );
+
+
+    /*
+    TANPURA → RECORDING
+
+    Very soft Tanpura in the
+    actual submitted recording.
+    */
+
+    tanpuraSource.connect(
+        tanpuraRecordGain
+    );
+
+    tanpuraRecordGain.connect(
+        masterGain
+    );
+
+
+    /*
+    MASTER → RECORDER
+    */
+
+    masterGain.connect(
+        mixDestination
+    );
+
+
+    /*
+    TANPURA → PHONE SPEAKER
+
+    Separate from recording volume.
+    */
+
+    tanpuraSource.connect(
+        tanpuraSpeakerGain
+    );
+
+    tanpuraSpeakerGain.connect(
+        audioContext.destination
+    );
+
+
+    /*
+    MICROPHONE PERMISSION SUCCESS
+    */
+
+    micStatus.innerHTML =
+        '<span class="mic"></span> Microphone Ready';
+
+}
+
+
+/* RECORD */
+
+recordBtn.addEventListener(
+    "click",
+    async function(){
+
+        try{
+
+            message.innerHTML = "";
+
+            /*
+            Ask for microphone only if
+            audio has not already been created.
+            */
+
+            await setupAudio();
+
+
+            /*
+            Resume AudioContext if mobile
+            browser suspended it.
+            */
+
+            if(audioContext.state === "suspended"){
+
+                await audioContext.resume();
+
+            }
+
+
+            /*
+            Clear previous recording.
+            */
+
+            chunks = [];
+
+            recordedBlob = null;
+
+            preview.pause();
+
+            preview.removeAttribute("src");
+
+            preview.style.display = "none";
+
+
+            /*
+            Reset Tanpura position.
+            */
+
+            tanpura.currentTime = 0;
+
+
+            /*
+            Create a NEW MediaRecorder
+            for every recording.
+
+            This is important for
+            re-recording.
+            */
+
+            recorder =
+                new MediaRecorder(
+                    mixDestination.stream
+                );
+
+
+            recorder.ondataavailable =
+                function(event){
+
+                    if(event.data &&
+                       event.data.size > 0){
+
+                        chunks.push(
+                            event.data
+                        );
+
+                    }
+
+                };
+
+
+            recorder.onstop =
+                function(){
+
+                    recordedBlob =
+                        new Blob(
+                            chunks,
+                            {
+                                type:
+                                recorder.mimeType ||
+                                "audio/webm"
+                            }
+                        );
+
+
+                    const audioURL =
+                        URL.createObjectURL(
+                            recordedBlob
+                        );
+
+
+                    preview.src =
+                        audioURL;
+
+                    preview.style.display =
+                        "block";
+
+
+                    submitBtn.disabled =
+                        false;
+
+
+                    message.innerHTML =
+                        "Recording ready. You can play it or record again.";
+
+                };
+
+
+            /*
+            START RECORDER
+            */
+
+            recorder.start();
+
+
+            isRecording = true;
+
+
+            /*
+            START TANPURA
+
+            Catch mobile autoplay/play errors
+            silently.
+            */
+
+            try{
+
+                await tanpura.play();
+
+            }catch(e){
+
+                console.log(
+                    "Tanpura playback:",
+                    e
+                );
+
+            }
+
+
+            /*
+            UI
+            */
+
+            recordBtn.disabled =
+                true;
+
+            stopBtn.disabled =
+                false;
+
+            submitBtn.disabled =
+                true;
+
+            onair.style.display =
+                "block";
+
+            micStatus.innerHTML =
+                '<span class="mic blink"></span> Microphone LIVE';
+
+
+            /*
+            TIMER
+            */
+
+            secondsRemaining = 300;
+
+            updateTimer();
+
+
+            clearInterval(
+                timerInterval
+            );
+
+
+            timerInterval =
+                setInterval(
+
+                    function(){
+
+                        secondsRemaining--;
+
+                        updateTimer();
+
+
+                        if(secondsRemaining <= 0){
+
+                            stopRecording();
+
+                        }
+
+                    },
+
+                    1000
+
+                );
+
+
+        }catch(error){
+
+            console.error(error);
+
+
+            message.innerHTML =
+                "Microphone access is required. Please allow microphone permission and try again.";
+
+
+            micStatus.innerHTML =
+                '<span class="mic"></span> Microphone Access Required';
 
         }
 
-      },300000);
-
-  }
-
-  catch(error){
-
-    stopAllAudio();
-
-    status.innerText=
-      "Microphone access was not allowed.";
-
-    console.error(error);
-
-  }
-
-};
+    }
+);
 
 
 /* STOP */
 
-stopButton.onclick=function(){
+stopBtn.addEventListener(
+    "click",
+    function(){
 
-  if(
-    recorder &&
-    recorder.state!=="inactive"
-  ){
+        stopRecording();
+
+    }
+);
+
+
+function stopRecording(){
+
+    if(!recorder ||
+       recorder.state !== "recording"){
+
+        return;
+
+    }
+
 
     recorder.stop();
 
-    recordButton.disabled=false;
-    stopButton.disabled=true;
 
-    clearInterval(timerInterval);
-    clearTimeout(maxTimer);
+    isRecording = false;
 
-    mic.classList.remove("blink");
 
-    onair.innerText="";
+    clearInterval(
+        timerInterval
+    );
 
-  }
 
-};
+    /*
+    Stop Tanpura.
+
+    IMPORTANT:
+    We do NOT close the AudioContext.
+    We do NOT stop the microphone stream.
+
+    This allows another recording.
+    */
+
+    tanpura.pause();
+
+    tanpura.currentTime = 0;
+
+
+    /*
+    UI
+    */
+
+    recordBtn.disabled =
+        false;
+
+    stopBtn.disabled =
+        true;
+
+    onair.style.display =
+        "none";
+
+    micStatus.innerHTML =
+        '<span class="mic"></span> Microphone Ready';
+
+
+    timerDisplay.innerHTML =
+        "05:00";
+
+}
+
+
+/* TIMER */
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(
+            secondsRemaining / 60
+        );
+
+    const seconds =
+        secondsRemaining % 60;
+
+
+    timerDisplay.innerHTML =
+        String(minutes).padStart(2,"0")
+        + ":"
+        +
+        String(seconds).padStart(2,"0");
+
+}
 
 
 /* SUBMIT */
 
-submitButton.onclick=function(){
+submitBtn.addEventListener(
+    "click",
+    async function(){
 
-  if(!audioBlob){
-    return;
-  }
+        if(!recordedBlob){
 
-  const firstName=
-    firstNameInput.value.trim();
+            message.innerHTML =
+                "Please record your Namokar Jaap first.";
 
-  const surname=
-    surnameInput.value.trim();
+            return;
 
-  const fullName=
-    getFullName();
-
-  status.className="";
-  status.innerText="Submitting...";
-
-  const now=
-    new Date();
-
-  const timestamp=
-    now.getFullYear()+"-"+
-    String(now.getMonth()+1).padStart(2,"0")+"-"+
-    String(now.getDate()).padStart(2,"0")+"_"+
-
-    String(now.getHours()).padStart(2,"0")+"-"+
-    String(now.getMinutes()).padStart(2,"0")+"-"+
-    String(now.getSeconds()).padStart(2,"0");
+        }
 
 
-  const reader=
-    new FileReader();
+        const firstName =
+            firstNameInput.value.trim();
+
+        const surname =
+            surnameInput.value.trim();
 
 
-  reader.onloadend=function(){
+        if(!firstName ||
+           !surname){
 
-    const base64Audio=
-      reader.result.split(",")[1];
+            message.innerHTML =
+                "Please enter your First Name and Surname.";
+
+            return;
+
+        }
 
 
-    const formData=
-      new URLSearchParams();
+        submitBtn.disabled =
+            true;
+
+        recordBtn.disabled =
+            true;
+
+        message.innerHTML =
+            "Submitting your Namokar Jaap...";
 
 
-    formData.append(
-      "audio",
-      base64Audio
+        try{
+
+            const base64Audio =
+                await blobToBase64(
+                    recordedBlob
+                );
+
+
+            const data = {
+
+                firstName:
+                    firstName,
+
+                surname:
+                    surname,
+
+                fullName:
+                    firstName + " " + surname,
+
+                timestamp:
+                    new Date().toISOString(),
+
+                audio:
+                    base64Audio
+
+            };
+
+
+            await fetch(
+                SCRIPT_URL,
+                {
+                    method:"POST",
+
+                    mode:"no-cors",
+
+                    headers:{
+                        "Content-Type":
+                        "text/plain;charset=utf-8"
+                    },
+
+                    body:
+                        JSON.stringify(data)
+                }
+            );
+
+
+            /*
+            SUCCESS
+            */
+
+            message.innerHTML =
+                "🙏 Thank you. Your Namokar Jaap has been submitted LIVE.";
+
+
+            /*
+            Reset recording only.
+
+            Microphone permission stays available.
+            */
+
+            chunks = [];
+
+            recordedBlob = null;
+
+            preview.pause();
+
+            preview.removeAttribute("src");
+
+            preview.style.display =
+                "none";
+
+
+            submitBtn.disabled =
+                true;
+
+            recordBtn.disabled =
+                false;
+
+
+        }catch(error){
+
+            console.error(error);
+
+
+            message.innerHTML =
+                "There was a problem submitting. Please try again.";
+
+            submitBtn.disabled =
+                false;
+
+            recordBtn.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* BLOB → BASE64 */
+
+function blobToBase64(blob){
+
+    return new Promise(
+        function(resolve,reject){
+
+            const reader =
+                new FileReader();
+
+
+            reader.onloadend =
+                function(){
+
+                    const result =
+                        reader.result;
+
+
+                    const base64 =
+                        result.split(",")[1];
+
+
+                    resolve(base64);
+
+                };
+
+
+            reader.onerror =
+                reject;
+
+
+            reader.readAsDataURL(
+                blob
+            );
+
+        }
     );
 
-
-    formData.append(
-      "firstName",
-      firstName
-    );
-
-
-    formData.append(
-      "surname",
-      surname
-    );
-
-
-    formData.append(
-      "fullName",
-      fullName
-    );
-
-
-    formData.append(
-      "timestamp",
-      timestamp
-    );
-
-
-    fetch(
-      "https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec",
-      {
-        method:"POST",
-        mode:"no-cors",
-        headers:{
-          "Content-Type":
-          "application/x-www-form-urlencoded"
-        },
-        body:
-          formData.toString()
-      }
-    )
-
-    .then(function(){
-
-      status.className="success";
-
-      status.innerHTML=
-        "✅ SUBMITTED TO NAMOKAR RADIO<br>Thank you!";
-
-      submitButton.disabled=true;
-
-
-      setTimeout(function(){
-
-        resetForm();
-
-      },9000);
-
-    })
-
-
-    .catch(function(error){
-
-      status.className="";
-
-      status.innerText=
-        "Submission failed. Please try again.";
-
-      console.error(error);
-
-    });
-
-  };
-
-
-  reader.readAsDataURL(audioBlob);
-
-};
+}
 
 </script>
 
