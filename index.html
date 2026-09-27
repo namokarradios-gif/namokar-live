@@ -377,7 +377,13 @@ async function setupAudio(){
 
 
 recordBtn.addEventListener("click",async function(){
+const firstName=firstNameInput.value.trim();
+const surname=surnameInput.value.trim();
 
+if(!firstName || !surname){
+  message.innerHTML="Please enter your First Name and Surname first.";
+  return;
+}
  try{
 
   message.innerHTML="";
