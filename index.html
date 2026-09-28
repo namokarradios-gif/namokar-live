@@ -749,10 +749,13 @@ submitBtn.addEventListener("click",async function(){
    audio:base64Audio
   };
 
- headers:{
-  "Content-Type":"application/x-www-form-urlencoded"
-},
-body:new URLSearchParams(data)
+ await fetch(SCRIPT_URL,{
+  method:"POST",
+  headers:{
+    "Content-Type":"application/x-www-form-urlencoded"
+  },
+  body:new URLSearchParams(data)
+});
   });
 
   message.innerHTML=
