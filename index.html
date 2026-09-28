@@ -196,10 +196,121 @@ audio{
  }
 
 }
+ /* 🌸 Falling Petals + 🪔 Agarbatti */
+#petals{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:1;
+}
+
+.petal{
+  position:absolute;
+  top:-30px;
+  font-size:22px;
+  opacity:.75;
+  animation:fall linear infinite;
+}
+
+@keyframes fall{
+  0%{
+    transform:translateY(-30px) rotate(0deg);
+    opacity:0;
+  }
+  10%{
+    opacity:.8;
+  }
+  90%{
+    opacity:.7;
+  }
+  100%{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+#incense{
+  position:fixed;
+  bottom:8px;
+  left:18px;
+  width:70px;
+  height:100px;
+  pointer-events:none;
+  z-index:2;
+}
+
+.stick{
+  position:absolute;
+  bottom:0;
+  left:30px;
+  width:4px;
+  height:62px;
+  background:#5b351e;
+  border-radius:3px;
+  transform:rotate(-7deg);
+}
+
+.stick2{
+  position:absolute;
+  bottom:0;
+  left:43px;
+  width:4px;
+  height:62px;
+  background:#5b351e;
+  border-radius:3px;
+  transform:rotate(7deg);
+}
+
+.smoke{
+  position:absolute;
+  bottom:57px;
+  left:25px;
+  font-size:30px;
+  opacity:.35;
+  animation:smoke 3s ease-in-out infinite;
+}
+
+.smoke2{
+  position:absolute;
+  bottom:57px;
+  left:39px;
+  font-size:27px;
+  opacity:.3;
+  animation:smoke 3.5s ease-in-out infinite .5s;
+}
+
+@keyframes smoke{
+  0%{
+    transform:translateY(8px) scale(.8);
+    opacity:0;
+  }
+  40%{
+    opacity:.35;
+  }
+  100%{
+    transform:translate(-8px,-65px) scale(1.4);
+    opacity:0;
+  }
+}
 </style>
 </head>
 
 <body>
+ <div id="petals">
+  <div class="petal" style="left:8%;animation-duration:12s;">🌸</div>
+  <div class="petal" style="left:25%;animation-duration:15s;animation-delay:3s;">🌸</div>
+  <div class="petal" style="left:48%;animation-duration:13s;animation-delay:6s;">🌸</div>
+  <div class="petal" style="left:70%;animation-duration:16s;animation-delay:2s;">🌸</div>
+  <div class="petal" style="left:88%;animation-duration:14s;animation-delay:5s;">🌸</div>
+</div>
+
+<div id="incense">
+  <div class="stick"></div>
+  <div class="stick2"></div>
+  <div class="smoke">〰</div>
+  <div class="smoke2">〰</div>
+</div>
 
 <div class="container">
 
