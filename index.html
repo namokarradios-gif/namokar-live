@@ -312,6 +312,29 @@ audio{
     transform:scale(1.06);
   }
 }
+ .namokar-scroll{
+  width:100%;
+  overflow:hidden;
+  margin-top:25px;
+  padding:10px 0;
+  white-space:nowrap;
+  border-top:1px solid rgba(255,255,255,.15);
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.namokar-scroll span{
+  display:inline-block;
+  padding-left:100%;
+  color:#ffe6a8;
+  font-size:18px;
+  font-weight:700;
+  animation:namokarMove 35s linear infinite;
+}
+
+@keyframes namokarMove{
+  from{transform:translateX(0);}
+  to{transform:translateX(-100%);}
+}
 </style>
 </head>
 
@@ -385,6 +408,12 @@ target="_blank"
 rel="noopener">
 🎙 Listen to Live Namokar Radio
 </a>
+</div>
+ <div class="namokar-scroll">
+  <span>
+    णमो अरिहंताणं • णमो सिद्धाणं • णमो आयरियाणं • णमो उवज्झायाणं • णमो लोए सव्व साहूणं •
+    एसो पंच णमोक्कारो • सव्व पावप्पणासणो • मंगलाणं च सव्वेसिं • पढमं हवइ मंगलं •
+  </span>
 </div>
 
 <audio id="tanpura"
