@@ -322,18 +322,33 @@ audio{
   border-bottom:1px solid rgba(255,255,255,.15);
 }
 
-.namokar-scroll span{
-  display:inline-block;
-  padding-left:20%;
+.namokar-scroll{
+  width:100%;
+  overflow:hidden;
+  margin-top:25px;
+  padding:10px 0;
+  white-space:nowrap;
+  border-top:1px solid rgba(255,255,255,.15);
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.namokar-track{
+  display:flex;
+  width:max-content;
+  animation:namokarMove 30s linear infinite;
+}
+
+.namokar-item{
+  flex:none;
   color:#ffe6a8;
   font-size:18px;
   font-weight:700;
-  animation:namokarMove 30s linear infinite;
+  padding-right:80px;
 }
 
 @keyframes namokarMove{
   from{transform:translateX(0);}
-  to{transform:translateX(-100%);}
+  to{transform:translateX(-50%);}
 }
 </style>
 </head>
@@ -410,12 +425,15 @@ rel="noopener">
 </a>
 </div>
  <div class="namokar-scroll">
-  <span>
-    णमो अरिहंताणं • णमो सिद्धाणं • णमो आयरियाणं • णमो उवज्झायाणं • णमो लोए सव्व साहूणं •
-    एसो पंच णमोक्कारो • सव्व पावप्पणासणो • मंगलाणं च सव्वेसिं • पढमं हवइ मंगलं •
-  </span>
+  <div class="namokar-track">
+    <div class="namokar-item">
+      णमो अरिहंताणं • णमो सिद्धाणं • णमो आयरियाणं • णमो उवज्झायाणं • णमो लोए सव्व साहूणं • एसो पंच णमोकारो • सव्व पावप्पणासणो • मंगलाणं च सव्वेसिं • पढमं हवइ मंगलं •
+    </div>
+    <div class="namokar-item">
+      णमो अरिहंताणं • णमो सिद्धाणं • णमो आयरियाणं • णमो उवज्झायाणं • णमो लोए सव्व साहूणं • एसो पंच णमोकारो • सव्व पावप्पणासणो • मंगलाणं च सव्वेसिं • पढमं हवइ मंगलं •
+    </div>
+  </div>
 </div>
-
 <audio id="tanpura"
 src="tanpura.mp3"
 preload="auto"
