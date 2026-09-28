@@ -135,11 +135,37 @@ audio{
 }
 
 #message{
- margin-top:7px;
- font-weight:bold;
+ margin:4px 0 10px;
+ min-height:52px;
+ font-weight:700;
+ color:#f0c7b0;
+ font-size:17px;
+ line-height:1.35;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+}
+
+#message.error{
+ color:#ff5454;
+}
+
+#message.live{
+ color:#ff5454;
+}
+
+#message.thanks{
  color:#f4d9bd;
- min-height:20px;
- font-size:15px;
+}
+
+#message .message-mic{
+ display:inline-block;
+ font-size:24px;
+ margin-right:6px;
+}
+
+#message .blink{
+ animation:blink 1s infinite;
 }
 
 .listen{
@@ -196,7 +222,9 @@ audio{
  }
 
 }
- /* 🌸 Falling Petals + 🪔 Agarbatti */
+
+/* 🌸 Falling Petals + 🪔 Agarbatti */
+
 #petals{
   position:fixed;
   inset:0;
@@ -218,12 +246,15 @@ audio{
     transform:translateY(-30px) rotate(0deg);
     opacity:0;
   }
+
   10%{
     opacity:.8;
   }
+
   90%{
     opacity:.7;
   }
+
   100%{
     transform:translateY(110vh) rotate(360deg);
     opacity:0;
@@ -285,15 +316,18 @@ audio{
     transform:translateY(8px) scale(.8);
     opacity:0;
   }
+
   40%{
     opacity:.35;
   }
+
   100%{
     transform:translate(-8px,-65px) scale(1.4);
     opacity:0;
   }
 }
- .diya{
+
+.diya{
   position:absolute;
   bottom:0;
   left:48px;
@@ -307,19 +341,11 @@ audio{
     filter:drop-shadow(0 0 5px #ffd84d);
     transform:scale(1);
   }
+
   50%{
     filter:drop-shadow(0 0 13px #ffb300);
     transform:scale(1.06);
   }
-}
- .namokar-scroll{
-  width:100%;
-  overflow:hidden;
-  margin-top:25px;
-  padding:10px 0;
-  white-space:nowrap;
-  border-top:1px solid rgba(255,255,255,.15);
-  border-bottom:1px solid rgba(255,255,255,.15);
 }
 
 .namokar-scroll{
@@ -354,45 +380,60 @@ audio{
 </head>
 
 <body>
- <div id="petals">
+
+<div id="petals">
+
   <div class="petal" style="left:8%;animation-duration:12s;">🌸</div>
+
   <div class="petal" style="left:25%;animation-duration:15s;animation-delay:3s;">🌸</div>
+
   <div class="petal" style="left:48%;animation-duration:13s;animation-delay:6s;">🌸</div>
+
   <div class="petal" style="left:70%;animation-duration:16s;animation-delay:2s;">🌸</div>
+
   <div class="petal" style="left:88%;animation-duration:14s;animation-delay:5s;">🌸</div>
+
 </div>
 
 <div id="incense">
+
   <div class="stick"></div>
+
   <div class="stick2"></div>
- <div class="diya">🪔</div>
+
+  <div class="diya">🪔</div>
+
   <div class="smoke">〰</div>
+
   <div class="smoke2">〰</div>
+
 </div>
 
 <div class="container">
 
 <h1>Join 24/7 Live Namokar Jaap</h1>
 
-<div class="subtitle">
-Chant Namokar in your Voice
+<div id="message">
+
+  <div>Chant Namokar in your Voice</div>
+
+  <div>Up to 5 minutes</div>
+
 </div>
 
-<div class="limit">
-Up to 5 minutes
-</div>
+<input
+ type="text"
+ id="firstName"
+ placeholder="First Name"
+ autocomplete="given-name">
 
-<input type="text" id="firstName" placeholder="First Name" autocomplete="given-name">
-
-<input type="text" id="surname" placeholder="Surname" autocomplete="family-name">
+<input
+ type="text"
+ id="surname"
+ placeholder="Surname"
+ autocomplete="family-name">
 
 <div id="fullNameDisplay"></div>
-
-<div id="micStatus"></div>
-
-<div id="onair" style="display:none;">
-🔴 You are LIVE OnAir
-</div>
 
 <div id="timerLabel">
 TIME REMAINING
@@ -403,11 +444,22 @@ TIME REMAINING
 </div>
 
 <div>
-<button id="recordBtn">🎙 RECORD</button>
-<button id="stopBtn" disabled>⏹ STOP</button>
+
+<button id="recordBtn">
+🎙 RECORD
+</button>
+
+<button id="stopBtn" disabled>
+⏹ STOP
+</button>
+
 </div>
 
-<audio id="preview" controls style="display:none;"></audio>
+<audio
+ id="preview"
+ controls
+ style="display:none;">
+</audio>
 
 <br>
 
@@ -415,29 +467,44 @@ TIME REMAINING
 ✓ SUBMIT
 </button>
 
-<div id="message"></div>
-
 <div class="listen">
-<a href="https://tunein.com/radio/NAMOKAR-RADIOS-s349685/"
-target="_blank"
-rel="noopener">
+
+<a
+ href="https://tunein.com/radio/NAMOKAR-RADIOS-s349685/"
+ target="_blank"
+ rel="noopener">
+
 🎙 Listen to Live Namokar Jaap on Derasar Radio Network
+
 </a>
+
 </div>
- <div class="namokar-scroll">
+
+<div class="namokar-scroll">
+
   <div class="namokar-track">
+
     <div class="namokar-item">
+
       णमो अरिहंताणं • णमो सिद्धाणं • णमो आयरियाणं • णमो उवज्झायाणं • णमो लोए सव्व साहूणं • एसो पंच णमोकारो • सव्व पावप्पणासणो • मंगलाणं च सव्वेसिं • पढमं हवइ मंगलं •
+
     </div>
+
     <div class="namokar-item">
+
       णमो अरिहंताणं • णमो सिद्धाणं • णमो आयरियाणं • णमो उवज्झायाणं • णमो लोए सव्व साहूणं • एसो पंच णमोकारो • सव्व पावप्पणासणो • मंगलाणं च सव्वेसिं • पढमं हवइ मंगलं •
+
     </div>
+
   </div>
+
 </div>
-<audio id="tanpura"
-src="tanpura.mp3"
-preload="auto"
-loop>
+
+<audio
+ id="tanpura"
+ src="tanpura.mp3"
+ preload="auto"
+ loop>
 </audio>
 
 </div>
@@ -445,48 +512,91 @@ loop>
 <script>
 
 const recordBtn=document.getElementById("recordBtn");
+
 const stopBtn=document.getElementById("stopBtn");
+
 const submitBtn=document.getElementById("submitBtn");
+
 const preview=document.getElementById("preview");
+
 const tanpura=document.getElementById("tanpura");
-const micStatus=document.getElementById("micStatus");
-const onair=document.getElementById("onair");
+
 const timerDisplay=document.getElementById("timer");
+
 const message=document.getElementById("message");
+
 const firstNameInput=document.getElementById("firstName");
+
 const surnameInput=document.getElementById("surname");
+
 const fullNameDisplay=document.getElementById("fullNameDisplay");
+
+
+function setMessage(line1,line2="",type=""){
+
+  message.className=type;
+
+  message.innerHTML=
+    "<div>"+line1+"</div><div>"+line2+"</div>";
+
+}
+
 
 function updateFullName(){
 
  const f=firstNameInput.value.trim();
+
  const s=surnameInput.value.trim();
 
- fullNameDisplay.textContent=(f+" "+s).trim().toUpperCase();
+ fullNameDisplay.textContent=
+   (f+" "+s).trim().toUpperCase();
 
 }
 
-firstNameInput.addEventListener("input",updateFullName);
-surnameInput.addEventListener("input",updateFullName);
 
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec";
+firstNameInput.addEventListener(
+ "input",
+ updateFullName
+);
+
+surnameInput.addEventListener(
+ "input",
+ updateFullName
+);
+
+
+const SCRIPT_URL=
+"https://script.google.com/macros/s/AKfycbwasN4Nh7O1C4Nhpdn1noFyRDJ7rz7mN9CnHa1c8AzibfaR_HKbezA3C7u_pg9fxolCPQ/exec";
+
 
 let audioContext=null;
+
 let micStream=null;
+
 let micSource=null;
+
 let tanpuraSource=null;
+
 let mixDestination=null;
 
 let micGain=null;
+
 let tanpuraRecordGain=null;
+
 let tanpuraSpeakerGain=null;
+
 let masterGain=null;
 
 let recorder=null;
+
 let chunks=[];
+
 let recordedBlob=null;
+
 let timerInterval=null;
+
 let secondsRemaining=300;
+
 let isRecording=false;
 
 
@@ -501,64 +611,100 @@ async function setupAudio(){
  }
 
  micStream=await navigator.mediaDevices.getUserMedia({
+
   audio:{
    echoCancellation:false,
    noiseSuppression:false,
    autoGainControl:false
   }
+
  });
 
- audioContext=new(window.AudioContext||window.webkitAudioContext)();
+ audioContext=
+   new(window.AudioContext||window.webkitAudioContext)();
 
  await audioContext.resume();
 
- micSource=audioContext.createMediaStreamSource(micStream);
+ micSource=
+   audioContext.createMediaStreamSource(
+     micStream
+   );
 
  tanpura.loop=true;
+
  tanpura.currentTime=0;
 
- tanpuraSource=audioContext.createMediaElementSource(tanpura);
+ tanpuraSource=
+   audioContext.createMediaElementSource(
+     tanpura
+   );
 
- mixDestination=audioContext.createMediaStreamDestination();
+ mixDestination=
+   audioContext.createMediaStreamDestination();
 
- micGain=audioContext.createGain();
+ micGain=
+   audioContext.createGain();
+
  micGain.gain.value=1.20;
 
- tanpuraRecordGain=audioContext.createGain();
+ tanpuraRecordGain=
+   audioContext.createGain();
+
  tanpuraRecordGain.gain.value=0.015;
 
- tanpuraSpeakerGain=audioContext.createGain();
+ tanpuraSpeakerGain=
+   audioContext.createGain();
+
  tanpuraSpeakerGain.gain.value=0;
 
- masterGain=audioContext.createGain();
+ masterGain=
+   audioContext.createGain();
+
  masterGain.gain.value=0.60;
 
  micSource.connect(micGain);
+
  micGain.connect(masterGain);
 
  tanpuraSource.connect(tanpuraRecordGain);
+
  tanpuraRecordGain.connect(masterGain);
 
  masterGain.connect(mixDestination);
 
  tanpuraSource.connect(tanpuraSpeakerGain);
- tanpuraSpeakerGain.connect(audioContext.destination);
 
-micStatus.innerHTML='🎙️';
+ tanpuraSpeakerGain.connect(
+   audioContext.destination
+ );
+
 }
 
 
-recordBtn.addEventListener("click",async function(){
-const firstName=firstNameInput.value.trim();
-const surname=surnameInput.value.trim();
+recordBtn.addEventListener(
+ "click",
+ async function(){
 
-if(!firstName || !surname){
-  message.innerHTML="Please enter your First Name and Surname first.";
-  return;
-}
+ const firstName=
+   firstNameInput.value.trim();
+
+ const surname=
+   surnameInput.value.trim();
+
+ if(!firstName || !surname){
+
+   setMessage(
+     "Please enter your First Name",
+     "and Surname first.",
+     "error"
+   );
+
+   return;
+ }
+
  try{
 
-  message.innerHTML="";
+  setMessage("","","");
 
   await setupAudio();
 
@@ -566,42 +712,67 @@ if(!firstName || !surname){
    await audioContext.resume();
 
   chunks=[];
+
   recordedBlob=null;
 
   preview.pause();
+
   preview.removeAttribute("src");
+
   preview.style.display="none";
 
   tanpura.currentTime=0;
 
-  recorder=new MediaRecorder(mixDestination.stream);
+  recorder=
+    new MediaRecorder(
+      mixDestination.stream
+    );
 
-  recorder.ondataavailable=function(event){
+  recorder.ondataavailable=
+    function(event){
 
-   if(event.data && event.data.size>0)
-    chunks.push(event.data);
+     if(
+       event.data &&
+       event.data.size>0
+     )
+       chunks.push(event.data);
 
-  };
+    };
+
 
   recorder.onstop=function(){
 
-   recordedBlob=new Blob(chunks,{
-    type:recorder.mimeType||"audio/webm"
-   });
+   recordedBlob=
+     new Blob(
+       chunks,
+       {
+        type:
+          recorder.mimeType ||
+          "audio/webm"
+       }
+     );
 
-   preview.src=URL.createObjectURL(recordedBlob);
+   preview.src=
+     URL.createObjectURL(
+       recordedBlob
+     );
+
    preview.style.display="block";
 
    submitBtn.disabled=false;
 
-   message.innerHTML=
-   "Recording ready. Play it, then tap SUBMIT.";
+   setMessage(
+     "Recording ready.",
+     "Play it, then tap SUBMIT."
+   );
 
   };
+
 
   recorder.start();
 
   isRecording=true;
+
 
   try{
 
@@ -610,23 +781,33 @@ if(!firstName || !surname){
    await tanpura.play();
 
    tanpuraSpeakerGain.gain.linearRampToValueAtTime(
-    0.03,
-    audioContext.currentTime+2
+     0.03,
+     audioContext.currentTime+2
    );
 
   }catch(e){
 
-   console.log("Tanpura playback:",e);
+   console.log(
+     "Tanpura playback:",
+     e
+   );
 
   }
 
+
   recordBtn.disabled=true;
+
   stopBtn.disabled=false;
+
   submitBtn.disabled=true;
 
-  onair.style.display="block";
 
- micStatus.innerHTML='<span class="blink" style="display:inline-block;font-size:24px;">🎙️</span>';
+  setMessage(
+    '<span class="message-mic blink">🎙️</span> You are LIVE OnAir',
+    "",
+    "live"
+  );
+
 
   secondsRemaining=300;
 
@@ -634,43 +815,52 @@ if(!firstName || !surname){
 
   clearInterval(timerInterval);
 
-  timerInterval=setInterval(function(){
+  timerInterval=
+    setInterval(
+      function(){
 
-   secondsRemaining--;
+       secondsRemaining--;
 
-   updateTimer();
+       updateTimer();
 
-   if(secondsRemaining<=0)
-    stopRecording();
+       if(secondsRemaining<=0)
+        stopRecording();
 
-  },1000);
+      },
+      1000
+    );
+
 
  }catch(error){
 
   console.error(error);
 
-  message.innerHTML=
-  "Microphone access is required. Please allow microphone permission and try again.";
-
-  micStatus.innerHTML=
-  '<span class="mic"></span> Microphone Access Required';
+  setMessage(
+    "Microphone access is required.",
+    "Please allow microphone permission and try again.",
+    "error"
+  );
 
  }
 
 });
 
 
-stopBtn.addEventListener("click",function(){
+stopBtn.addEventListener(
+ "click",
+ function(){
 
- stopRecording();
+  stopRecording();
 
-});
+ }
+);
 
 
 function stopRecording(){
 
- if(!recorder || recorder.state!=="recording")
-  return;
+ if(!recorder ||
+    recorder.state!=="recording")
+   return;
 
  recorder.stop();
 
@@ -679,17 +869,15 @@ function stopRecording(){
  clearInterval(timerInterval);
 
  tanpura.pause();
+
  tanpura.currentTime=0;
 
  if(tanpuraSpeakerGain)
-  tanpuraSpeakerGain.gain.value=0;
+   tanpuraSpeakerGain.gain.value=0;
 
  recordBtn.disabled=false;
+
  stopBtn.disabled=true;
-
- onair.style.display="none";
-
- micStatus.innerHTML='';
 
  timerDisplay.innerHTML="05:00";
 
@@ -698,93 +886,151 @@ function stopRecording(){
 
 function updateTimer(){
 
- const minutes=Math.floor(secondsRemaining/60);
- const seconds=secondsRemaining%60;
+ const minutes=
+   Math.floor(
+     secondsRemaining/60
+   );
+
+ const seconds=
+   secondsRemaining%60;
 
  timerDisplay.innerHTML=
- String(minutes).padStart(2,"0")+":"+
- String(seconds).padStart(2,"0");
+   String(minutes).padStart(2,"0")+
+   ":"+
+   String(seconds).padStart(2,"0");
 
 }
 
 
-submitBtn.addEventListener("click",async function(){
+submitBtn.addEventListener(
+ "click",
+ async function(){
 
  if(!recordedBlob){
 
-  message.innerHTML=
-  "Please record your Namokar Jaap first.";
+  setMessage(
+    "Please record your Namokar Jaap first.",
+    "",
+    "error"
+  );
 
   return;
 
  }
 
- const firstName=firstNameInput.value.trim();
- const surname=surnameInput.value.trim();
+ const firstName=
+   firstNameInput.value.trim();
+
+ const surname=
+   surnameInput.value.trim();
 
  if(!firstName || !surname){
 
-  message.innerHTML=
-  "Please enter your First Name and Surname.";
+  setMessage(
+    "Please enter your First Name",
+    "and Surname.",
+    "error"
+  );
 
   return;
 
  }
 
  submitBtn.disabled=true;
+
  recordBtn.disabled=true;
 
- message.innerHTML=
- "Submitting your Namokar Jaap...";
+ setMessage(
+   "Submitting your Namokar Jaap...",
+   ""
+ );
+
 
  try{
 
-  const base64Audio=await blobToBase64(recordedBlob);
+  const base64Audio=
+    await blobToBase64(
+      recordedBlob
+    );
 
   const data={
+
    firstName:firstName,
+
    surname:surname,
-   fullName:firstName+" "+surname,
-   timestamp:new Date().toISOString(),
-   audio:base64Audio
+
+   fullName:
+     firstName+" "+surname,
+
+   timestamp:
+     new Date().toISOString(),
+
+   audio:
+     base64Audio
+
   };
 
- await fetch(SCRIPT_URL,{
-  method:"POST",
-  headers:{
-    "Content-Type":"application/x-www-form-urlencoded"
-  },
-  body:new URLSearchParams(data)
-});
+
+  await fetch(
+    SCRIPT_URL,
+    {
+     method:"POST",
+
+     headers:{
+      "Content-Type":
+       "application/x-www-form-urlencoded"
+     },
+
+     body:
+       new URLSearchParams(data)
+    }
+  );
 
 
-  message.innerHTML=
-  "🙏 Thank you. Your Namokar Jaap will go LIVE soon.";
+  setMessage(
+    "🙏 Thank you.",
+    "Your Namokar Jaap will go LIVE soon.",
+    "thanks"
+  );
+
 
   chunks=[];
+
   recordedBlob=null;
 
   preview.pause();
+
   preview.removeAttribute("src");
+
   preview.style.display="none";
 
   submitBtn.disabled=true;
+
   recordBtn.disabled=false;
 
-  setTimeout(function(){
 
-  window.location.reload();
+  setTimeout(
+    function(){
 
-  },10000);
+     window.location.reload();
+
+    },
+    10000
+  );
+
 
  }catch(error){
 
   console.error(error);
 
-  message.innerHTML=
-  "There was a problem submitting. Please try again.";
+  setMessage(
+    "There was a problem submitting.",
+    "Please try again.",
+    "error"
+  );
 
   submitBtn.disabled=false;
+
   recordBtn.disabled=false;
 
  }
@@ -794,21 +1040,27 @@ submitBtn.addEventListener("click",async function(){
 
 function blobToBase64(blob){
 
- return new Promise(function(resolve,reject){
+ return new Promise(
+  function(resolve,reject){
 
-  const reader=new FileReader();
+   const reader=
+     new FileReader();
 
-  reader.onloadend=function(){
+   reader.onloadend=
+     function(){
 
-   resolve(reader.result.split(",")[1]);
+      resolve(
+        reader.result.split(",")[1]
+      );
 
-  };
+   };
 
-  reader.onerror=reject;
+   reader.onerror=reject;
 
-  reader.readAsDataURL(blob);
+   reader.readAsDataURL(blob);
 
- });
+  }
+ );
 
 }
 
