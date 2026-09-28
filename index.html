@@ -293,6 +293,25 @@ audio{
     opacity:0;
   }
 }
+ .diya{
+  position:absolute;
+  bottom:0;
+  left:48px;
+  font-size:30px;
+  filter:drop-shadow(0 0 7px #ffd84d);
+  animation:diyaGlow 1.4s ease-in-out infinite;
+}
+
+@keyframes diyaGlow{
+  0%,100%{
+    filter:drop-shadow(0 0 5px #ffd84d);
+    transform:scale(1);
+  }
+  50%{
+    filter:drop-shadow(0 0 13px #ffb300);
+    transform:scale(1.06);
+  }
+}
 </style>
 </head>
 
@@ -308,6 +327,7 @@ audio{
 <div id="incense">
   <div class="stick"></div>
   <div class="stick2"></div>
+ <div class="diya">🪔</div>
   <div class="smoke">〰</div>
   <div class="smoke2">〰</div>
 </div>
