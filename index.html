@@ -413,12 +413,11 @@ audio{
 
 <h1>OUR DERASAR RADIO</h1>
 <div class="subtitle">Akhand Namokar Jaap</div>
-<div class="limit">Join Live Namokar Chanting in Your Own Voice</div>
-<div class="daily-time">Daily 5:30 AM – 9:00 PM</div>
+<div class="limit">Daily 5:30 AM – 9:00 PM</div>
 
 <div id="message">
 
-  <div>Chant Namokar in Your Voice — Up to 5 minutes</div>
+  <div>Chant Namokar in your Voice</div>
 
   <div>Up to 5 minutes</div>
 
@@ -524,7 +523,7 @@ const fullNameInput=document.getElementById("fullName");
 
 
 
-const fullNameDisplay=document.getElementById("fullNameDisplay");
+
 
 
 function setMessage(line1,line2="",type=""){
@@ -677,68 +676,38 @@ async function setupAudio(){
 
 
 function getISTMinutes(){
-
  const parts=new Intl.DateTimeFormat("en-GB",{
-  timeZone:"Asia/Kolkata",
-  hour:"2-digit",
-  minute:"2-digit",
-  hour12:false
+  timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit",hour12:false
  }).formatToParts(new Date());
-
  let hour=Number(parts.find(p=>p.type==="hour").value);
  const minute=Number(parts.find(p=>p.type==="minute").value);
-
  if(hour===24) hour=0;
-
  return hour*60+minute;
 }
 
-
 function isRecordingAllowed(){
-
  const minutes=getISTMinutes();
-
  return minutes>=330 && minutes<1260;
 }
 
-
 function updateRecordingAvailability(){
-
  if(isRecording) return;
-
  if(isRecordingAllowed()){
-
   recordBtn.disabled=false;
-
  }else{
-
   recordBtn.disabled=true;
-
   if(!recordedBlob){
-
-   setMessage(
-    "Live Namokar Jaap",
-    "is available daily from 5:30 AM – 9:00 PM."
-   );
-
+   setMessage("Live Namokar Jaap","is available daily from 5:30 AM – 9:00 PM.");
   }
-
  }
-
 }
 
+updateRecordingAvailability();
+setInterval(function(){ updateRecordingAvailability(); },1000);
 
 recordBtn.addEventListener(
  "click",
  async function(){
-
- if(!isRecordingAllowed()){
-
-  updateRecordingAvailability();
-
-  return;
-
- }
 
  const firstName=
    firstNameInput.value.trim();
@@ -878,11 +847,8 @@ recordBtn.addEventListener(
 
        updateTimer();
 
-       if(secondsRemaining<=0){
+       if(secondsRemaining<=0)
         stopRecording();
-       }else if(!isRecordingAllowed()){
-        stopRecording();
-       }
 
       },
       1000
@@ -933,13 +899,11 @@ function stopRecording(){
  if(tanpuraSpeakerGain)
    tanpuraSpeakerGain.gain.value=0;
 
- recordBtn.disabled=!isRecordingAllowed();
+ recordBtn.disabled=false;
 
  stopBtn.disabled=true;
 
  timerDisplay.innerHTML="05:00";
-
- updateRecordingAvailability();
 
 }
 
@@ -1015,8 +979,12 @@ submitBtn.addEventListener(
 
   const data={
 
+   firstName:firstName,
+
+   surname:surname,
+
    fullName:
-     fullName,
+     firstName+" "+surname,
 
    timestamp:
      new Date().toISOString(),
@@ -1062,7 +1030,7 @@ submitBtn.addEventListener(
 
   submitBtn.disabled=true;
 
-  recordBtn.disabled=!isRecordingAllowed();
+  recordBtn.disabled=false;
 
 
   setTimeout(
@@ -1087,20 +1055,11 @@ submitBtn.addEventListener(
 
   submitBtn.disabled=false;
 
-  recordBtn.disabled=!isRecordingAllowed();
+  recordBtn.disabled=false;
 
  }
 
 });
-
-
-updateRecordingAvailability();
-
-setInterval(function(){
-
- updateRecordingAvailability();
-
-},1000);
 
 
 function blobToBase64(blob){
