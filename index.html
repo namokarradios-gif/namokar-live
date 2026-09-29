@@ -411,9 +411,7 @@ audio{
 
 <div class="container">
 
-<h1>OUR DERASAR RADIO</h1>
-<div class="subtitle">Akhand Namokar Jaap</div>
-<div class="limit">Daily 5:30 AM – 9:00 PM</div>
+<h1>Join 24/7 Live Namokar Jaap</h1>
 
 <div id="message">
 
@@ -425,9 +423,17 @@ audio{
 
 <input
  type="text"
- id="fullName"
- placeholder="First Name & Surname"
- autocomplete="name">
+ id="firstName"
+ placeholder="First Name"
+ autocomplete="given-name">
+
+<input
+ type="text"
+ id="surname"
+ placeholder="Surname"
+ autocomplete="family-name">
+
+<div id="fullNameDisplay"></div>
 
 <div id="timerLabel">
 TIME REMAINING
@@ -519,11 +525,11 @@ const timerDisplay=document.getElementById("timer");
 
 const message=document.getElementById("message");
 
-const fullNameInput=document.getElementById("fullName");
+const firstNameInput=document.getElementById("firstName");
 
+const surnameInput=document.getElementById("surname");
 
-
-
+const fullNameDisplay=document.getElementById("fullNameDisplay");
 
 
 function setMessage(line1,line2="",type=""){
@@ -674,36 +680,6 @@ async function setupAudio(){
 
 }
 
-
-function getISTMinutes(){
- const parts=new Intl.DateTimeFormat("en-GB",{
-  timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit",hour12:false
- }).formatToParts(new Date());
- let hour=Number(parts.find(p=>p.type==="hour").value);
- const minute=Number(parts.find(p=>p.type==="minute").value);
- if(hour===24) hour=0;
- return hour*60+minute;
-}
-
-function isRecordingAllowed(){
- const minutes=getISTMinutes();
- return minutes>=330 && minutes<1260;
-}
-
-function updateRecordingAvailability(){
- if(isRecording) return;
- if(isRecordingAllowed()){
-  recordBtn.disabled=false;
- }else{
-  recordBtn.disabled=true;
-  if(!recordedBlob){
-   setMessage("Live Namokar Jaap","is available daily from 5:30 AM – 9:00 PM.");
-  }
- }
-}
-
-updateRecordingAvailability();
-setInterval(function(){ updateRecordingAvailability(); },1000);
 
 recordBtn.addEventListener(
  "click",
