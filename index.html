@@ -597,6 +597,16 @@ let timerInterval=null;
 let secondsRemaining=300;
 
 let isRecording=false;
+ // ===============================
+// LIVE BROADCAST BRIDGE
+// ===============================
+
+const LIVE_BRIDGE_URL =
+  "ws://localhost:3000/live";
+
+let liveSocket=null;
+let liveProcessor=null;
+let liveSilentGain=null;
 
 
 async function setupAudio(){
@@ -769,6 +779,60 @@ recordBtn.addEventListener(
 
 
   recorder.start();
+  // Start LIVE broadcast
+liveSocket = new WebSocket(LIVE_BRIDGE_URL);
+
+liveSocket.onopen = () => {
+
+  liveSocket.send(JSON.stringify({
+    type: "config",
+    sampleRate: audioContext.sampleRate
+  }));
+
+  liveProcessor = audioContext.createScriptProcessor(
+    4096,
+    1,
+    1
+  );
+
+  liveSilentGain = audioContext.createGain();
+  liveSilentGain.gain.value = 0;
+
+  liveProcessor.onaudioprocess = event => {
+
+    if (
+      !liveSocket ||
+      liveSocket.readyState !== WebSocket.OPEN
+    ) {
+      return;
+    }
+
+    const input =
+      event.inputBuffer.getChannelData(0);
+
+    const pcm =
+      new Int16Array(input.length);
+
+    for(let i = 0; i < input.length; i++){
+
+      let sample = input[i];
+
+      sample =
+        Math.max(-1, Math.min(1, sample));
+
+      pcm[i] =
+        sample < 0
+          ? sample * 32768
+          : sample * 32767;
+    }
+
+    liveSocket.send(pcm.buffer);
+  };
+
+  micSource.connect(liveProcessor);
+  liveProcessor.connect(liveSilentGain);
+  liveSilentGain.connect(audioContext.destination);
+};
 
   isRecording=true;
 
@@ -862,6 +926,21 @@ function stopRecording(){
    return;
 
  recorder.stop();
+ // Stop LIVE broadcast
+if (liveProcessor) {
+  liveProcessor.disconnect();
+  liveProcessor = null;
+}
+
+if (liveSilentGain) {
+  liveSilentGain.disconnect();
+  liveSilentGain = null;
+}
+
+if (liveSocket) {
+  liveSocket.close();
+  liveSocket = null;
+}
 
  isRecording=false;
 
